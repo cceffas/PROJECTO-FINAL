@@ -1,0 +1,1 @@
+npx sass -w ./public/sass/main.scss:./public/css/style.css -s compressed

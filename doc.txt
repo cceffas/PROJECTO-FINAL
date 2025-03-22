@@ -1,0 +1,16 @@
+painel principl:
+
+estudante,pagamentos,turmas,professores,inscricoes,confirmacoes,cursos
+
+
+
+automatizar,
+processos de:
+
+cursos,alunos,instrutores,
+
+admin:
+inscricooes,avaliacoes,e emicao de certificados,relatorios de desempenho dos alunos..
+
+funcoes:
+gerenciar alunos,cursos,registro de presencas,
