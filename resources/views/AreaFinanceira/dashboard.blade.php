@@ -1,15 +1,15 @@
-<div class="container-column w-100 p-8 g-16">
+<x-screen>
 
 
-    <div class="container-row w-100  g-16 wrap">
+    <div class="flex flex-row flex-wrap w-full  gap-2">
 
         <x-bladewind::card has_shadow="true" class="grow">
 
 
-            <div class="container-column center p-8">
+            <div class="flex flex-col items-center justify-center p-2">
                 <x-bladewind::statistic number="657" label="total alunos">
                     <x-slot name="icon">
-                        <i class="bi-people-fill icone-circle"></i>
+                        <i class="bi-people-fill text-2xl text-gray-500"></i>
                     </x-slot>
                 </x-bladewind::statistic>
             </div>
@@ -27,10 +27,10 @@
         <x-bladewind::card has_shadow="true" class="grow">
 
 
-            <div class="container-column center p-8">
+            <div class="flex flex-col items-center justify-center p-2">
                 <x-bladewind::statistic number="7" label="total cursos">
                     <x-slot name="icon">
-                        <i class="bi-collection-fill icone-circle"></i>
+                        <i class="bi-collection-fill text-2xl text-gray-500"></i>
                     </x-slot>
                 </x-bladewind::statistic>
             </div>
@@ -47,10 +47,10 @@
         <x-bladewind::card has_shadow="true" class="grow">
 
 
-            <div class="container-column center p-8">
+            <div class="flex flex-col items-center justify-center p-2">
                 <x-bladewind::statistic number="16" label="total Turmas">
                     <x-slot name="icon">
-                        <i class="bi-door-closed-fill icone-circle"></i>
+                        <i class="bi-door-closed-fill text-2xl text-gray-500"></i>
                     </x-slot>
                 </x-bladewind::statistic>
             </div>
@@ -66,10 +66,10 @@
         <x-bladewind::card has_shadow="true" class="grow">
 
 
-            <div class="container-column center p-8">
+            <div class="flex flex-col items-center justify-center p-2">
                 <x-bladewind::statistic number="8" label="total instrutores">
                     <x-slot name="icon">
-                        <i class="bi-people-fill icone-circle"></i>
+                        <i class="bi-people-fill text-2xl text-gray-500"></i>
                     </x-slot>
                 </x-bladewind::statistic>
             </div>
@@ -87,16 +87,14 @@
     {{-- end header --}}
 
 
-    <div class="container-column w-100 grow">
-        {{-- <x-bladewind::card class="container-column center grow"> --}}
+    <div class="flex flex-col w-full grow">
 
-            <div class="container-filter-chart">
-
+        <x-bladewind.card>
+            <div class="flex">
+                <canvas id="chart"  class="w-full"></canvas>
             </div>
-            <canvas id="chart" class="graph-item"></canvas>
-            {{-- grafico --}}
-
-        {{-- </x-bladewind::card> --}}
+        </x-bladewind.card>
+        {{-- grafico --}}
     </div>
     {{-- end content --}}
 
@@ -104,19 +102,13 @@
 
         $months = [3, 3, 43, 45, 44, 23, 23, 89, 54];
 
-        // for ($n = 0; $n <= 12; $n++) {
-
-        // $months[$n] = date('M', $n);
-        // }
-
         function getItemArray($array)
         {
             $count = 0;
-            $limit =sizeof($array);
+            $limit = sizeof($array);
 
             foreach ($array as $item) {
-
-                if ($count < $limit-1) {
+                if ($count < $limit - 1) {
                     echo $item . ',';
                 } else {
                     echo $item;
@@ -138,7 +130,7 @@
                 labels: ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "Ago", "set", "out", "nov", "dez"],
                 datasets: [{
                     label: ['Alunos'],
-                    
+
                     data: [{{ getItemArray($months) }}],
                     // backgroundColor,
                     // borderColor:['red'],
@@ -157,4 +149,4 @@
 
 
 
-</div>
+</x-screen>

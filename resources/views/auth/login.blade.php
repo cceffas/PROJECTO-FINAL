@@ -2,47 +2,48 @@
 
 @section('content')
 
-<div class="flex center p-8 w-100 h-screen">
+    <div class="flex w-full items-center justify-center h-screen  bg-gray-200">
 
-    <form class="panel container-column box p-16 r-8 g-16" method="post" action="/logar">
+        <x-bladewind::card>
 
-        @csrf
+            <form class="flex flex-col gap-4 min-h-96 min-w-96" method="post" action="/logar">
 
-        <div class="container-column center">
-            <h1><i class='bi-person-circle  f-5x'></i></h1>
-            <p class='f-1x'>Iniciar sessão</p>
-        </div>
-        <!-- end -->
+                @csrf
 
-        <div class="container-column">
-            <x-bladewind::input type="text" name='nome' autofocus label="Nome usuario" required />
-        </div>
-        <!-- end -->
-        <div class="container-column">
-            <x-bladewind::input type="password" viewable name='senha' label="Senha" required />
-        </div>
-        <!-- end -->
+                <div class="flex flex-col items-center justify-center gap-2">
+                    <h1><i class='bi-person-circle  text-gray-500 text-7xl'></i></h1>
+                    <p class='text-gray-500 text-base'>Iniciar sessão</p>
+                </div>
+                <!-- end -->
 
-        <div class="container-row">
-            <x-bladewind::checkbox name="lembrar" label='lembrar' value='true' />
-        </div>
-        <!-- end -->
+                <div class="flex flex-col">
+                    <x-bladewind::input type="text" name='nome' autofocus label="Nome usuario" required />
+                    {{-- end --}}
+                    <x-bladewind::input type="password" viewable name='senha' label="Senha" required />
+                </div>
+                <!-- end -->
+          
+                <div class="container-row">
+                    <x-bladewind::checkbox name="lembrar" label='lembrar' value='true' />
+                </div>
+                <!-- end -->
 
-        @if (session()->has('error'))
+                @if (session()->has('error'))
+                    <x-bladewind::alert type="error"> {{ session()->get('error') }}</x-bladewind::alert>
+                @endif
+                <!-- end -->
 
-        <x-bladewind::alert type="error"> {{ session()->get('error') }}</x-bladewind::alert>
+                <div class="flex flex-col ">
+                    <x-bladewind::button can_submit>
+                        iniciar sessão
+                    </x-bladewind::button>
+                </div>
+                <!-- end -->
 
-        @endif
-        <!-- end -->
+            </form>
 
-        <div class="container-column">
-            <x-bladewind::button can_submit>
-                iniciar sessão
-            </x-bladewind::button>
-        </div>
-        <!-- end -->
+        </x-bladewind::card>
 
-    </form>
+    </div>
 
-</div>
 @endsection

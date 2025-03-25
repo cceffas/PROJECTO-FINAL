@@ -1,140 +1,133 @@
 @props(['screen'])
 
-<div class="x-asidebar-app container-column g-32">
 
-    <div class="container-row  g-16 ">
+<div class="flex flex-col max-h-screen min-w-52 overflow-y-auto   gap-4">
 
-        {{-- <button class="asidebar-btn-tool"><i class="bi-x"></i></button>
-        end --}}
+    <x-bladewind.card>
+        <div class="flex flex-col items-center p-4 ">
 
-        <button class="asidebar-btn-tool" onclick="asidebarCollaps()"><i class="bi-arrow-left"></i></button>
+            <x-bladewind.theme-switcher />
+            {{-- end --}}
+
+        </div>
         {{-- end --}}
 
-        {{-- <button class="asidebar-btn-tool"><i class="bi-layout-sidebar"></i></button>
-        end --}}
-    </div>
-    {{-- end --}}
+        <aside>
 
-    <aside>
+            <nav class="flex flex-col p-4 gap-4">
 
-        <nav class="container-column g-8">
+                <div class="flex flex-col items-start gap-2 ">
 
-            <div class="aside-group-options  ">
+                    <x-bladewind::button class=" text-gray-500 active-btn-option" onclick="reloadScreen()">
+                        <i class="text-base bi-house-fill "></i>
+                        dashboard
+                    </x-bladewind::button>
 
-                {{-- <h1 class="aside-title-option ">
-                    inicio
-                </h1> --}}
-                {{-- end --}}
-
-                <button class="aside-btn-option active-btn-option" onclick="reloadScreen()">
-                    <i class="bi-house-fill"></i>
-                    dashboard
-                </button>
-                {{-- end --}}
-
-            </div>
-            {{-- end  inicio --}}
-            <hr>
-            {{-- end --}}
-            <div class="aside-group-options  ">
-
-                <h1 class="aside-title-option">
-                    area financeira
-                </h1>
-                {{-- end --}}
-
-
-                <button class="aside-btn-option" onclick="changeScreen('/insc','{{ $screen }}')">
-                    <i class="bi-person-fill-add"></i>
-                    inscrição
-                </button>
-                {{-- end --}}
-                <button class="aside-btn-option">
-                    <i class="bi-person-vcard-fill"></i>
-                    pagamentos
-                </button>
-                {{-- end --}}
-                <button class="aside-btn-option">
-                    <i class="bi-person-fill-gear"></i>
-                    gerenciar aluno
-                </button>
-                {{-- end --}}
-
-            </div>
-            {{-- end  area financeira --}}
-            <hr>
-            {{-- end --}}
-            <div class="aside-group-options">
-
-                <h1 class="aside-title-option">
-                    area pedagica
-                </h1>
-                {{-- end --}}
-
-                <button class="aside-btn-option">
-                    <i class="bi-people-fill"></i>
-                    painel Alunos
-                </button>
-                {{-- end --}}
-
-                <button class="aside-btn-option">
-                    <i class="bi-postcard-fill"></i>
-                    certificados
-                </button>
-                {{-- end --}}
-
-                <button class="aside-btn-option">
-                    <i class="bi-calendar-month-fill"></i>
-                    assiduidade
-                </button>
-                {{-- end --}}
-
-
-            </div>
-            {{-- end area pedagica --}}
-            <hr>
-            {{-- end --}}
-            <div class="aside-group-options">
-
-                <h1 class="aside-title-option">
-                    admin
-                </h1>
-                {{-- end --}}
-                <button class="aside-btn-option">
-                    <i class="bi-gear-fill"></i>
-                    option
-                </button>
-                {{-- end --}}
-
-
-            </div>
-            {{-- end  admin --}}
-            <hr>
-            {{-- end --}}
-            <div class="aside-group-options">
-
-                <h1 class="aside-title-option">
-                    definições
-                </h1>
-                {{-- end --}}
-                <div class="flex space-b">
-                    <label>modo escuro</label>
-                    <x-bladewind::toggle />
                 </div>
+                {{-- end  inicio --}}
+
+                <hr>
                 {{-- end --}}
-                <div class="flex space-b">
-                    <label>relogio</label>
-                    <x-bladewind::toggle />
+
+                <div class="flex flex-col items-start gap-2 ">
+
+                    <h1 class="text-gray-600 capitalize">
+                        area financeira
+                    </h1>
+                    {{-- end --}}
+
+
+                    <x-bladewind::button class=" text-gray-500" onclick="changeScreen('/insc','{{ $screen }}')">
+                        <i class="text-base bi-person-fill-add "></i>
+                        inscrição
+                    </x-bladewind::button>
+                    {{-- end --}}
+                    <x-bladewind::button class=" text-gray-500">
+                        <i class="text-base bi-person-vcard-fill "></i>
+                        pagamentos
+                    </x-bladewind::button>
+                    {{-- end --}}
+                    <x-bladewind::button class=" text-gray-500">
+                        <i class="text-base bi-person-fill-gear "></i>
+                        gerenciar aluno
+                    </x-bladewind::button>
+                    {{-- end --}}
+
                 </div>
+                {{-- end  area financeira --}}
+                <hr>
+                {{-- end --}}
+                <div class="flex flex-col items-start gap-2">
+
+                    <h1 class="text-gray-600 capitalize">
+                        area pedagica
+                    </h1>
+                    {{-- end --}}
+
+                    <x-bladewind::button class=" text-gray-500">
+                        <i class="text-base bi-people-fill "></i>
+                        painel Alunos
+                    </x-bladewind::button>
+                    {{-- end --}}
+
+                    <x-bladewind::button class=" text-gray-500">
+                        <i class="text-base bi-postcard-fill "></i>
+                        certificados
+                    </x-bladewind::button>
+                    {{-- end --}}
+
+                    <x-bladewind::button class=" text-gray-500">
+                        <i class="text-base bi-calendar-month-fill "></i>
+                        assiduidade
+                    </x-bladewind::button>
+                    {{-- end --}}
 
 
-            </div>
-            {{-- end  admin --}}
+                </div>
+                {{-- end area pedagica --}}
+                <hr>
+                {{-- end --}}
+                <div class="flex flex-col items-start gap-2">
 
-        </nav>
+                    <h1 class="text-gray-600 capitalize">
+                        admin
+                    </h1>
+                    {{-- end --}}
+                    <x-bladewind::button class=" text-gray-500">
+                        <i class="text-base bi-gear-fill "></i>
+                        option
+                    </x-bladewind::button>
+                    {{-- end --}}
+
+
+                </div>
+                {{-- end  admin --}}
+                <hr>
+                {{-- end --}}
+                <div class="flex flex-col items-start gap-2">
+
+                    <h1 class="text-gray-600 capitalize">
+                        definições
+                    </h1>
+                    {{-- end --}}
+                    <div class="flex w-full justify-between">
+                        <label class="text-gray-600 capitalize text-base">noturno</label>
+                        <x-bladewind::toggle />
+                    </div>
+                    {{-- end --}}
+                    <div class="flex w-full justify-between">
+                        <label class="text-gray-600 capitalize text-base">tempo</label>
+                        <x-bladewind::toggle />
+                    </div>
+
+
+                </div>
+                {{-- end  admin --}}
+
+            </nav>
+            {{-- end --}}
+
+        </aside>
         {{-- end --}}
-
-    </aside>
-    {{-- end --}}
-
+    </x-bladewind.card>
 </div>
