@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>gs</title>
+    {{-- icons link --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel='stylesheet' href='{{ asset("icons/bootstrap-icons.min.css") }}'>
+    {{-- bladewind components --}}
+    <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
+    {{-- my css link --}}
+    {{-- my js script --}}
+    <script src="./js/index.js" defer></script>
+    <script src="./js/components.js" defer></script>
+    <script src="./js/chartJs.js"></script>
+    @livewireStyles()
+</head>
+<script src="//unpkg.com/alpinejs" defer></script>
+
+<body class="flex w-full h-screen overflow-hidden  bg-slate-500">
+    <x-asidebar />
+    <main class='relative flex items-center justify-center grow'>
+        {{-- first --}}
+        <header id="header" class="absolute top-0 flex items-center justify-center w-full h-20 z-40 border-b backdrop-blur border-b-red-400">
+            <div class="container flex  justify-end items-center pr-10 gap-10">
+                <x-bladewind::theme-switcher />
+                {{-- end --}}
+                <x-bladewind::dropmenu>
+                    <x-bladewind::dropmenu.item>
+                        <button>historico</button>
+                    </x-bladewind::dropmenu.item>
+                    {{-- end --}}
+                    <x-bladewind::dropmenu.item>
+                        <button class="flex items-center justify-center text-red-500" onclick="showModal('sair')">
+                            sair
+                        </button>
+                    </x-bladewind::dropmenu.item>
+                    {{-- end --}}
+                </x-bladewind::dropmenu>
+                {{-- end --}}
+            </div>
+        </header>
+        <!-- /header -->
+        <section class=" h-full grow overflow-y-auto">
+            <x-bladewind::card>
+                <div class="min-h-screen w-full">
+                    @yield('content')
+                </div>
+            </x-bladewind::card>
+        </section>
+        {{-- end --}}
+        <x-bladewind::modal name="sair" show_action_buttons=false>
+            <form method="get" action="/sair" class="flex flex-col items-center justify-between w-full h-32 ">
+                @csrf
+                <i class="bi-box-arrow-left flex justify-center items-center text-red-500 size-8 rounded-full bg-red-500/50 text-lg"></i>
+                <h1 class="text-lg text-red-500">quer sair?</h1>
+                <div class="flex justify-end gap-2 w-full">
+                    <x-bladewind::button type='secondary' onclick="hideModal('sair')">Não</x-bladewind::button>
+                    <x-bladewind::button can_submit='true'>sim</x-bladewind::button>
+                </div>
+            </form>
+        </x-bladewind::modal>
+        {{-- end modal --}}
+        <x-bladewind.notification type='sucess' />
+        @if(session()->has('sucess'))
+        <script>
+        showNotification('sucesso!', "{{ session()->get('sucess') }} ")
+
+        </script>
+        @elseif(session()->has('error'))
+        <script>
+        showNotification('falhou!', "{{ session()->get('error') }}", 'error')
+
+        </script>
+        @endif
+    </main>
+    @livewireScripts()
+</body>
+
+</html>

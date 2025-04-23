@@ -27,7 +27,7 @@
     'groupby' => null,
     'actions_title' => 'actions',
     'column_aliases' => [],
-    'searchable' => config('bladewind.table.searchable', false),
+    'searchable' => config('bladewind.table.searchable', true),
     'search_placeholder' => config('bladewind.table.search_placeholder', 'Search table below...'),
     'search_field' => null,
     'search_debounce' => 0,

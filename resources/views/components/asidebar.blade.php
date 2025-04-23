@@ -1,133 +1,73 @@
 @props(['screen'])
-
-
-<div class="flex flex-col max-h-screen min-w-52 overflow-y-auto   gap-4">
-
-    <x-bladewind.card>
-        <div class="flex flex-col items-center p-4 ">
-
-            <x-bladewind.theme-switcher />
-            {{-- end --}}
-
-        </div>
+<aside class="w-64 h-full bg-slate-400 p-4  flex flex-col items-center z-50  overflow-y-auto">
+    <div class="flex text-2xl font-bold text-white items-center justify-center bg-gradient-to-br from-slate-600 rounded-md p-2 ">
+        <h1>G</h1>
+        <h1 class="text-white">Center</h1>
+        <i class="bi-plus-circle-dotted mt-1"></i>
+    </div>
+    {{-- end logo --}}
+    <nav class="mt-10 w-full text-white space-y-10">
+        <ul>
+            <li class=" w-full"><a href="/panel" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-house-fill text-2xl"></i>painel</a></li>
+        </ul>
         {{-- end --}}
-
-        <aside>
-
-            <nav class="flex flex-col p-4 gap-4">
-
-                <div class="flex flex-col items-start gap-2 ">
-
-                    <x-bladewind::button class=" text-gray-500 active-btn-option" onclick="reloadScreen()">
-                        <i class="text-base bi-house-fill "></i>
-                        dashboard
-                    </x-bladewind::button>
-
-                </div>
-                {{-- end  inicio --}}
-
-                <hr>
-                {{-- end --}}
-
-                <div class="flex flex-col items-start gap-2 ">
-
-                    <h1 class="text-gray-600 capitalize">
-                        area financeira
-                    </h1>
-                    {{-- end --}}
-
-
-                    <x-bladewind::button class=" text-gray-500" onclick="changeScreen('/insc','{{ $screen }}')">
-                        <i class="text-base bi-person-fill-add "></i>
-                        inscrição
-                    </x-bladewind::button>
-                    {{-- end --}}
-                    <x-bladewind::button class=" text-gray-500">
-                        <i class="text-base bi-person-vcard-fill "></i>
-                        pagamentos
-                    </x-bladewind::button>
-                    {{-- end --}}
-                    <x-bladewind::button class=" text-gray-500">
-                        <i class="text-base bi-person-fill-gear "></i>
-                        gerenciar aluno
-                    </x-bladewind::button>
-                    {{-- end --}}
-
-                </div>
-                {{-- end  area financeira --}}
-                <hr>
-                {{-- end --}}
-                <div class="flex flex-col items-start gap-2">
-
-                    <h1 class="text-gray-600 capitalize">
-                        area pedagica
-                    </h1>
-                    {{-- end --}}
-
-                    <x-bladewind::button class=" text-gray-500">
-                        <i class="text-base bi-people-fill "></i>
-                        painel Alunos
-                    </x-bladewind::button>
-                    {{-- end --}}
-
-                    <x-bladewind::button class=" text-gray-500">
-                        <i class="text-base bi-postcard-fill "></i>
-                        certificados
-                    </x-bladewind::button>
-                    {{-- end --}}
-
-                    <x-bladewind::button class=" text-gray-500">
-                        <i class="text-base bi-calendar-month-fill "></i>
-                        assiduidade
-                    </x-bladewind::button>
-                    {{-- end --}}
-
-
-                </div>
-                {{-- end area pedagica --}}
-                <hr>
-                {{-- end --}}
-                <div class="flex flex-col items-start gap-2">
-
-                    <h1 class="text-gray-600 capitalize">
-                        admin
-                    </h1>
-                    {{-- end --}}
-                    <x-bladewind::button class=" text-gray-500">
-                        <i class="text-base bi-gear-fill "></i>
-                        option
-                    </x-bladewind::button>
-                    {{-- end --}}
-
-
-                </div>
-                {{-- end  admin --}}
-                <hr>
-                {{-- end --}}
-                <div class="flex flex-col items-start gap-2">
-
-                    <h1 class="text-gray-600 capitalize">
-                        definições
-                    </h1>
-                    {{-- end --}}
-                    <div class="flex w-full justify-between">
-                        <label class="text-gray-600 capitalize text-base">noturno</label>
-                        <x-bladewind::toggle />
-                    </div>
-                    {{-- end --}}
-                    <div class="flex w-full justify-between">
-                        <label class="text-gray-600 capitalize text-base">tempo</label>
-                        <x-bladewind::toggle />
-                    </div>
-
-
-                </div>
-                {{-- end  admin --}}
-
-            </nav>
+        <details class="cursor-pointer bg-gradient-to-tl to-slate-400 from-slate-500 p-2 rounded-md
+        border-slate-400 border-2" open>
+            <summary class=" flex items-center gap-2  selection:text-current p-2">
+                <i class="bi-folder-fill text-gray-300 text-xl"></i>
+                <h1 class="text-white">Area financeira</h1>
+            </summary>
             {{-- end --}}
-
-        </aside>
-        {{-- end --}}
-    </x-bladewind.card>
-</div>
+            <ul class='flex flex-col justify-center items-center gap-2 text-gray-50'>
+                <li class=" w-full"><a href="/alunos" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-people-fill text-2xl"></i>Alunos</a></li>
+                {{-- end --}}
+                {{-- <li class=" w-full"><a href="/estagiarios" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-people-fill text-2xl"></i>Estagiarios</a></li> --}}
+                {{-- end --}}
+                <li class=" w-full"><a href="/pagamentos/" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-credit-card text-2xl"></i> Pagamentos</a></li>
+            </ul>
+        </details>
+        {{-- end group area financeira --}}
+        <details class="cursor-pointer bg-gradient-to-tl to-slate-400 from-slate-500 p-2 rounded-md
+        border-slate-400 border-2" open>
+            <summary class=" flex items-center gap-2  selection:text-current p-2">
+                <i class="bi-folder-fill text-gray-300 text-xl"></i>
+                <h1 class="text-white">Area Pedagogica</h1>
+            </summary>
+            {{-- end --}}
+            <ul class='flex flex-col justify-center items-center gap-2 text-gray-50'>
+                <li class=" w-full"><a href="/faltas" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-alarm text-2xl"></i>Assiduidade</a></li>
+                {{-- end --}}
+                <li class=" w-full"><a href="/desempenho" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-graph-down text-2xl"></i>Desempenho</a></li>
+                {{-- end --}}
+                <li class=" w-full"><a href="/certificados/" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-card-heading text-2xl"></i>certificados</a></li>
+            </ul>
+        </details>
+        {{-- end group area pedadogica --}}
+        <details class="cursor-pointer bg-gradient-to-tl to-slate-400 from-slate-500 p-2 rounded-md
+        border-slate-400 border-2" open>
+            <summary class=" flex items-center gap-2  selection:text-current p-2">
+                <i class="bi-shield-shaded text-gray-300 text-xl"></i>
+                <h1 class="text-white">Admin</h1>
+            </summary>
+            {{-- end --}}
+            <ul class='flex flex-col justify-center items-center gap-2 text-gray-50'>
+                <li class=" w-full"><a href="/usuarios/" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-people-fill text-2xl"></i>usuarios</a></li>
+                {{-- end --}}
+                <li class=" w-full"><a href="/turmas/" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-collection text-2xl"></i>Turmas</a></li>
+                {{-- end --}}
+                <li class=" w-full"><a href="/cursos/" class="bg-gradient-to-tl from-slate-600 flex items-center p-2 h-12 min-w-full rounded-md hover:outline outline-blue-500 capitalize gap-2 "><i class="bi-collection text-2xl"></i>cursos</a></li>
+            </ul>
+        </details>
+        {{-- end group area pedadogica --}}
+        <details class="cursor-pointer bg-gradient-to-tl to-slate-400 from-slate-500 p-2 rounded-md
+        border-slate-400 border-2">
+            <summary class=" flex items-center gap-2  selection:text-current p-2">
+                <i class="bi-gear-fill text-gray-300 text-xl"></i>
+                <h1 class="text-white">configurações</h1>
+            </summary>
+            {{-- end --}}
+        </details>
+        {{-- end group area pedadogica --}}
+    </nav>
+    {{-- end --}}
+</aside>
