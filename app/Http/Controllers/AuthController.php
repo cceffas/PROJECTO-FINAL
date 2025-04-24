@@ -2,7 +2,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
+use GuzzleHttp\Cookie\SetCookie;
 use Illuminate\Http\Request;
+
 
 class AuthController extends Controller
 {
@@ -15,14 +17,12 @@ class AuthController extends Controller
         $usuario = Usuario::where('nome', '=', $dados->nome)->first();
 
 
+
         if ($usuario) {
 
             if (password_verify($dados->senha, $usuario->senha)) {
 
-
-
-                if($usuario->estatus=='ON') return redirect('/')->with('error','o usuario ja se encontra logado');
-
+                cookie("user$dados->id",true,2880*60);
                 session(['logado'=>true]);
                 session(['id'=>$usuario->id]);
                 session(['cargo'=>$usuario->cargo]);
@@ -44,15 +44,14 @@ class AuthController extends Controller
     public function sair(){
 
 
-
-
         $usuario=Usuario::find(session()->get('id'));
 
         if(session()->has('logado')){
 
-            session()->forget('logado');
+            session()->flush();
             $usuario->estatus='OFF';
             $usuario->update();
+            cookie("user$usuario->id",null);
 
             return redirect('/');
         }

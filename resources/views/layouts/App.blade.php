@@ -8,6 +8,7 @@
     {{-- icons link --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel='stylesheet' href='{{ asset("icons/bootstrap-icons.min.css") }}'>
+    <link rel="stylesheet" href='{{asset("/css/scroll.css")}}'>
     {{-- bladewind components --}}
     <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
@@ -21,6 +22,7 @@
 </head>
 <script src="//unpkg.com/alpinejs" defer></script>
 
+{{-- end --}}
 <body class="flex w-full h-screen overflow-hidden  bg-slate-500">
     <x-asidebar />
     <main class='relative flex items-center justify-center grow'>

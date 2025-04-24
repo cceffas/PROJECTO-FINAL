@@ -63,6 +63,7 @@ class AlunoController extends Controller
         $validacao = Validator::make($dados->all(), [
             'nome'           => 'required|string|max:255',
             'bi'             => 'required|string|size:14',
+            'tel'=>'min:0|max:9',
             'curso'          => 'required|exists:cursos,id',
             'dt_nascimento'  => ['required', 'date', "after_or_equal:{$dataMinima->format('Y-m-d')}", "before_or_equal:{$dataMaxima->format('Y-m-d')}"],
             'foto'           => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -112,7 +113,6 @@ class AlunoController extends Controller
         $pdf = Pdf::loadView('pdf.ficha',['aluno'=>$aluno]);
 
         return $pdf->stream();
-        // return $pdf->download('ficha_de_confirmacao.pdf');
     }
 
     public function update(Request $dados){

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Turma;
 use App\Models\Curso;
 use App\Models\Aluno;
+use Illuminate\Support\Facades\Validator;
+
 
 class TurmaController extends Controller
 {
@@ -46,22 +48,15 @@ class TurmaController extends Controller
         $alunos_sem_turma=[];
 
 
-
-
         foreach ($alunos as $aluno ) {
 
-            if(sizeof($aluno->turmas()->get())==0){
+            if(sizeof($aluno->turmas()->get())==0 && sizeof($aluno->pagamentos()->get())>0){
 
                 array_push($alunos_sem_turma,$aluno);
             }
          
 
         }
-
-
-
-        // return $alunos;
-        // return $alunos[0]->turmas()->get();
 
         return view('main.turmas_aluno',['turma'=>$turma,'alunos'=>$alunos_sem_turma]);
 
@@ -75,11 +70,14 @@ class TurmaController extends Controller
 
         $turma_selecionado=Turma::find($dados->id);
         $limit=$turma_selecionado->qtd_aluno;
-        $count=0;
+
 
         foreach ($dados->item as $id) {
 
-            if($count<=$limit){
+            $alunos_turma_qtd=$turma_selecionado->alunos()->count();
+
+
+            if($alunos_turma_qtd<$limit){
 
                 $aluno=Aluno::find($id);
                 $turma_selecionado->alunos()->attach($aluno);
@@ -91,7 +89,6 @@ class TurmaController extends Controller
                 return redirect()->back()->with('error',"não foi possivel adicionar todos o aluno na turma devido ao liminte maximo de alunos!");
              }
 
-            $count++;
         }
 
 
@@ -103,15 +100,26 @@ class TurmaController extends Controller
     public function create(Request $dados)
     {
 
-          
+        // return $dados;
+
+          $validar=validator::make($dados->all(),
+            ['nome'=>'required',
+            'qtd_aluno'=>'required|max:32',
+            'curso'=>'required'
+            ]);
+
+
+
+            if($validar->fails()) return redirect()->back()->with('error','preencha todos os campos obrigatorios');
+
 
             $curso=Curso::find($dados->curso);
 
             $nova_turma=new Turma();
             $nova_turma->nome=$dados->nome;
             $nova_turma->qtd_aluno=$dados->qtd_aluno;
-
             $nova_turma->curso()->associate($curso);
+            $nova_turma->save();
 
             if($nova_turma->save()){
 
@@ -145,6 +153,18 @@ class TurmaController extends Controller
 
     public function update(Request $dados){
 
+
+
+
+        $validar=validator::make($dados->all(),
+            ['nome'=>'required',
+            'qtd_aluno'=>'required|max:32',
+            'curso'=>'required'
+            ]);
+
+
+
+        if($validar->fails()) return redirect()->back()->with('error','preencha todos os campos obrigatorios');
         $turma=Turma::find($dados->id);
         $curso=Curso::find($dados->curso);
 
