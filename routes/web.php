@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 //autenticacao
 Route::get('/', [AuthController::class, 'index'])->middleware(UsuarioNaoLogado::class);
+Route::view('/load','load');//->middleware(UsuarioLogado::class);
+
 Route::post('/entrar', [AuthController::class, 'entrar'])->middleware(UsuarioNaoLogado::class);
 Route::get('/sair',[AuthController::class,'sair'])->middleware(UsuarioLogado::class);
 
@@ -114,7 +116,9 @@ Route::middleware([Admin::class,UsuarioLogado::class])->prefix('/turmas')->group
     Route::get('/deletar/{id}',[TurmaController::class,'delete']);
 });
 //rotasde pagamentos
-Route::prefix('/pagamentos')->group(function () {
+Route::middleware([UsuarioLogado::class])->prefix('/pagamentos')->group(function () {
 
     Route::get('/', [PagamentoController::class, 'index']);
+    Route::post('/criar', [PagamentoController::class, 'create']);
+    Route::get('/ver/{id}', [PagamentoController::class, 'show']);
 });

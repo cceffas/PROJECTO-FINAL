@@ -136,10 +136,7 @@
                             {{-- end --}}
                             <h1>data de emição: <i class="text-blue-500">{{ $aluno->created_at }}</i></h1>
                             {{-- end --}}
-                            <div>
-                                <x-bladewind::button tag='a' href="/alunos/ficha/{{ $aluno->id }}">gerar pdf</x-bladewind::button>
-                            </div>
-                            {{-- end --}}
+      
                         </div>
                     </div>
                 </x-bladewind::card>

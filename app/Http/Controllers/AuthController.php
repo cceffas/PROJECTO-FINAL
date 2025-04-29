@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
+use GuzzleHttp\Cookie\SetCookie;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -15,50 +17,43 @@ class AuthController extends Controller
         $usuario = Usuario::where('nome', '=', $dados->nome)->first();
 
 
+
         if ($usuario) {
 
             if (password_verify($dados->senha, $usuario->senha)) {
 
-
-
-                if($usuario->estatus=='ON') return redirect('/')->with('error','o usuario ja se encontra logado');
-
-                session(['logado'=>true]);
-                session(['id'=>$usuario->id]);
-                session(['cargo'=>$usuario->cargo]);
-                $usuario->estatus='ON';
+                cookie("user$dados->id", true, 2880 * 60);
+                session(['logado' => true]);
+                session(['id' => $usuario->id]);
+                session(['cargo' => $usuario->cargo]);
+                $usuario->estatus = 'ON';
                 $usuario->update();
 
                 return redirect('/usuarios/');
-
             } else {
 
                 return redirect('/')->with('error', 'dados invalidos!');
-
             }
         } else {
 
             return redirect('/')->with('error', 'dados invalidos!');
         }
     }
-    public function sair(){
+    public function sair()
+    {
 
 
+        $usuario = Usuario::find(session()->get('id'));
 
+        if (session()->has('logado')) {
 
-        $usuario=Usuario::find(session()->get('id'));
-
-        if(session()->has('logado')){
-
-            session()->forget('logado');
-            $usuario->estatus='OFF';
+            session()->flush();
+            $usuario->estatus = 'OFF';
             $usuario->update();
+            cookie("user$usuario->id", null);
 
             return redirect('/');
         }
     }
-
-}
-{
-
+} {
 }

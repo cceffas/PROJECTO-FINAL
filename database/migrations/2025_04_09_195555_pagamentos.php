@@ -13,7 +13,10 @@ return new class extends Migration
         Schema::create('pagamentos', function (Blueprint $table) {
 
             $table->id();
-            $table->json('comprovativo');
+            $table->string('doc');
+            $table->float('montante');
+            $table->string('assunto');
+            $table->string('agente');
             $table->foreignId('aluno_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

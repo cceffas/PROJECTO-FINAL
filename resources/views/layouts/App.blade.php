@@ -4,10 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>gs</title>
+    <title>gestPlusCenter</title>
+ 
     {{-- icons link --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel='stylesheet' href='{{ asset("icons/bootstrap-icons.min.css") }}'>
+    <link rel="stylesheet" href='{{ asset("/css/scroll.css") }}'>
     {{-- bladewind components --}}
     <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
@@ -20,12 +22,16 @@
     @livewireStyles()
 </head>
 <script src="//unpkg.com/alpinejs" defer></script>
+{{-- end --}}
 
-<body class="flex w-full h-screen overflow-hidden  bg-slate-500">
+<body class="flex w-full h-screen overflow-hidden  bg-slate-800">
+    {{-- first --}}
     <x-asidebar />
+    {{-- end --}}
     <main class='relative flex items-center justify-center grow'>
         {{-- first --}}
-        <header id="header" class="absolute top-0 flex items-center justify-center w-full h-20 z-40 border-b backdrop-blur border-b-red-400">
+
+        <header id="header" class="absolute top-0 flex items-center justify-center w-full h-20 z-40 backdrop-blur shadow-lg ">
             <div class="container flex  justify-end items-center pr-10 gap-10">
                 <x-bladewind::theme-switcher />
                 {{-- end --}}

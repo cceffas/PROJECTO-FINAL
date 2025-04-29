@@ -1,64 +1,60 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UsuarioController extends Controller
-
-
 {
-
-  
     public function index()
     {
-        $cargos= ['root', 'admin', 'secretaria', 'pedagogia'];
+        $cargos = ['root','secretaria', 'pedagogia'];
 
         $usuarios = Usuario::all();
-        return view('forms.formUsuario', ['usuarios' => $usuarios,'cargos'=>$cargos]);
+        return view('forms.formUsuario', ['usuarios' => $usuarios,'cargos' => $cargos]);
     }
     public function create(Request $dados)
     {
 
 
 
-        // return dd($dados);
 
-        $validar = $dados->validate(['nome' => 'required|string|min:4', 'senha' => 'required|min:6']);
+        $validar = validator::make($dados->all(), ['nome' => 'required|string|min:4', 'senha' => 'required|min:6','cargo' => 'required']);
 
-        if ($validar) {
-
-            $novo_usuario = Usuario::create(['nome' => "$dados->nome", 'senha' => bcrypt($dados->senha), 'cargo' => $dados->cargo]);
-
-            return redirect('/usuarios/')->with('sucess', 'o novo usuario foi criado com sucesso! ');
-
-        } else {
-
-            return redirect('/usuarios/')->with('error', 'não foi possivel criar um novo usuario!');
-
+        if ($validar->fails()) {
+            return redirect()->back()->with('error', 'o nome deve conter no minimo 4 caracteres e senha 6, e um unico nivel de acesso!');
         }
 
+
+        $novo_usuario = Usuario::create(['nome' => "$dados->nome", 'senha' => bcrypt($dados->senha), 'cargo' => $dados->cargo]);
+
+        return redirect('/usuarios/')->with('sucess', 'o novo usuario foi criado com sucesso! ');
+
     }
+    // end
     public function update(Request $dados)
     {
 
 
-        $usuario= Usuario::find($dados->id);
+        $usuario = Usuario::find($dados->id);
 
 
-
-        if(password_verify($dados->senha,$usuario->senha)){
+        if (password_verify($dados->senha, $usuario->senha)) {
 
 
             $usuario->update([
-                'nome'=>$dados->nome,
-                'cargo'=>$dados->cargo
+                'nome' => $dados->nome,
+                'cargo' => $dados->cargo
             ]);
+
+            $usuario->update();
+
             return redirect('/usuarios/')->with('sucess', 'usuario atualizado com sucesso! ');
 
-        }
-        else{
-            return redirect('/usuarios/')->with('error', 'não foi possivel atualizar o usuario!');
+        } else {
+            return redirect('/usuarios/')->with('error', 'não foi possivel atualizar o usuario! senha incorrecta');
 
         }
 
@@ -71,7 +67,9 @@ class UsuarioController extends Controller
         if ($usuario) {
 
 
-            if($usuario->estatus=='ON') return redirect('/usuarios/')->with('error', 'não pode deletar usuario que esta logado!');
+            if ($usuario->estatus == 'ON') {
+                return redirect('/usuarios/')->with('error', 'não pode deletar usuario que esta logado!');
+            }
 
             $usuario->delete();
             return redirect('/usuarios/')->with('sucess', 'o usuario foi deletado com sucesso!');
