@@ -17,8 +17,6 @@ class AlunoController extends Controller
     public function index()
     {
 
-
-        
         $alunos = Aluno::all();
         $cursos = Curso::all();
         $_cursos = [];

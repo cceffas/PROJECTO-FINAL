@@ -15,9 +15,9 @@
     {{--
     <link rel='stylesheet' href='css/style.css'> --}}
     {{-- my js script --}}
-    <script src="./js/index.js" defer></script>
-    <script src="./js/components.js" defer></script>
-    <script src="./js/chartJs.js"></script>
+    <script src="./js/validate.js" defer></script>
+    {{-- <script src="./js/components.js" defer></script> --}}
+    {{-- <script src="./js/chartJs.js"></script> --}}
     @livewireStyles()
 </head>
 <script src="//unpkg.com/alpinejs" defer></script>

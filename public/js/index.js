@@ -1,7 +1,4 @@
-
-
-
-function reloadScreen(){
+function reloadScreen() {
 
     location.reload()
 }
@@ -23,8 +20,7 @@ async function changeScreen(url, id_element) {
 
 
 
-    }
-    else {
+    } else {
 
         element.innerHTML = "<h1>erro ao carregar</h1>"
 
@@ -40,7 +36,21 @@ async function changeScreen(url, id_element) {
 
 }
 
-// if (document.querySelector("#view") != null) {
 
-//     change_page_request("http://127.0.0.1:8000/", "view")
-// }
+
+
+/*colorir os botoens do aside bar caso forem pressinados*/
+
+const aside_buttons = document.querySelectorAll('#asidebar a')
+
+
+aside_buttons.forEach(function(element, index) {
+
+
+    if (element.href == location) {
+        element.classList.add('bg-blue-500')
+        element.classList.add('text-white')
+
+    }
+
+});
