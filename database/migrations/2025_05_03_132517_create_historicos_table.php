@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notas', function (Blueprint $table) {
+        Schema::create('historicos', function (Blueprint $table) {
             $table->id();
-            $table->float('valor');
-            $table->foreignId('aluno_id')->constrained()->onDelete('cascade');
+            $table->string('titulo');
+            $table->text('descricao');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notas');
+        Schema::dropIfExists('historicos');
     }
 };

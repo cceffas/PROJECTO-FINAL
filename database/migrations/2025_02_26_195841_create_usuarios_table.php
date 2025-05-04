@@ -7,29 +7,25 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id();
             $table->string("nome", 50);
             $table->string("senha", 60);
-            $table->enum("cargo", ['root', 'admin', 'secretaria', 'pedagogia']);
+            $table->enum("acesso", ['admin', 'secretaria', 'pedagogia']);
             $table->enum("estatus", ['OFF', 'ON']);
             $table->timestamps();
         });
 
         DB::table('usuarios')->insert([
-            'nome'=>'root',
-            'senha'=>bcrypt('123456'),
-            'cargo'=>'root']);
+            'nome' => 'admin',
+            'senha' => bcrypt('123456'),
+            'acesso' => 'admin'
+        ]);
     }
-
-    /**
-     * Reverse the migrations.
-     */
+  
     public function down(): void
     {
         Schema::dropIfExists('usuarios');

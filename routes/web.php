@@ -1,124 +1,155 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+// end init
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TurmaController;
+use App\Http\Controllers\InstrutorController;
+use App\Http\Controllers\NotificacaoController;
 // controllers end
 use App\Http\Middleware\UsuarioNaoLogado;
 use App\Http\Middleware\UsuarioLogado;
 use App\Http\Middleware\Admin;
-use App\Models\Instrutor;
-use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\Pedagogia;
+use App\Http\Middleware\Secretaria;
+use App\Http\Middleware\NoCacheHeaders;
+use App\Models\Notificacao;
+
+use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
+use Nette\Utils\Strings;
+
+//end midlewares
 
 
-//autenticacao
-Route::get('/', [AuthController::class, 'index'])->middleware(UsuarioNaoLogado::class);
-Route::view('/load','load');//->middleware(UsuarioLogado::class);
 
-Route::post('/entrar', [AuthController::class, 'entrar'])->middleware(UsuarioNaoLogado::class);
-Route::get('/sair',[AuthController::class,'sair'])->middleware(UsuarioLogado::class);
 
-// rotas para todos usuarios
-Route::middleware(UsuarioLogado::class)->get('/panel',function(){
+Route::get('/teste', function () {});
 
-    $dados= [
-        "labels" => ['Jan', 'Fev', 'Mar', 'Abr', 'Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-         "datasets" => [
-        [
-            'type' => 'bar',
-            'label' => 'Inscirções',
-            'data' => [10, 20, 30, 25, 15],
-            'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
-            'borderColor' => 'rgb(75, 192, 192)',
-        ],
-        [
-            'type' => 'line',
-            'label' => 'desistentes',
-            'data' => [12, 18, 28, 22, 17],
-            'borderColor' => '#FF6384',
-            'borderWidth' => 2,
-            'fill' => false,
-        ]
-    ]
-    ];
+Route::middleware(NoCacheHeaders::class)->group(function () {
 
-    $turmas= App\Models\Turma::count();
-    $cursos=App\Models\Curso::count();
-    $alunos=App\Models\Aluno::count();
+    Route::get('/', [AuthController::class, 'index'])->middleware(UsuarioNaoLogado::class);
 
-    $instrutores=Instrutor::count();
 
-    return view('main.dashboard',['turmas'=>$turmas,'cursos'=>$cursos,'alunos'=>$alunos,'instrutores'=>$instrutores,'dados'=>$dados]);
-});
-//rotas usuario
-Route::middleware([Admin::class,UsuarioLogado::class])->prefix('/usuarios')->group(function () {
+    Route::middleware(UsuarioLogado::class)->group(function () {
 
-    Route::get('/', [UsuarioController::class, 'index'])->middleware(UsuarioLogado::class);
-    Route::post('/criar', [UsuarioController::class, 'create'])->middleware(UsuarioLogado::class);
-    Route::post('/atualizar',[UsuarioController::class,'update']);
-    Route::get('/deletar/{id}', [UsuarioController::class, 'delete'])->middleware(UsuarioLogado::class);
+        Route::get('/sair', [AuthController::class, 'sair']);
+        Route::get('/back', function () {
 
-});
-//rotas cursos
-Route::middleware([Admin::class,UsuarioLogado::class])->prefix('/cursos')->group(function(){
+            return redirect('/panel');
+        });
 
-    Route::get('/',[CursoController::class,'index']);
-    Route::get('/alunos/{id}',[CursoController::class,'show']);
-    Route::post('/criar',[CursoController::class,'create']);
-    Route::post('/atualizar',[CursoController::class,'update']);
-    Route::get('/deletar/{id}',[CursoController::class,'delete']);
+        Route::get('/notifications', [NotificacaoController::class, 'index']);
+    });
+    Route::post('/entrar', [AuthController::class, 'entrar'])->middleware(UsuarioNaoLogado::class);
 
-});
-// rotas de alunos
-Route::middleware([Admin::class,UsuarioLogado::class])->prefix("/alunos")->group(function () {
 
-    Route::get("/",[AlunoController::class,'index']);
-    Route::post("/criar", [AlunoController::class, 'create']);
-    Route::post('/atualizar',[AlunoController::class,'update']);
-    Route::get('/deletar/{id}', [AlunoController::class, 'delete']);
-    Route::get('/{id}', [AlunoController::class, 'show']);
-    Route::get('/ficha/{id}',[AlunoController::class,'doc_pdf']);
-});
-// rotas de estagiarios
-Route::middleware([Admin::class,UsuarioLogado::class])->prefix("/estagiarios")->group(function(){
+    ##nivel de acesso Secretaria
 
-    Route::view('/','main.estagiarios');
+    Route::middleware(Secretaria::class)->get('/panel', function () {
 
-});
-// rotas de faltas
-Route::middleware([Admin::class,UsuarioLogado::class])->prefix("/faltas")->group(function(){
 
-    Route::view('/','main.assiduidades');
+        $dados = [
+            "labels" => ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            "datasets" => [
+                [
+                    'type' => 'bar',
+                    'label' => 'Inscirções',
+                    'data' => [10, 20, 30, 25, 15],
+                    'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
+                    'borderColor' => 'rgb(75, 192, 192)',
+                ],
+                [
+                    'type' => 'line',
+                    'label' => 'desistentes',
+                    'data' => [12, 18, 28, 22, 17],
+                    'borderColor' => '#FF6384',
+                    'borderWidth' => 2,
+                    'fill' => false,
+                ]
+            ]
+        ];
 
-});
-//rotas de certificados
-Route::middleware([Admin::class,UsuarioLogado::class])->prefix("/certificados")->group(function(){
+        $turmas = App\Models\Turma::count();
+        $cursos = App\Models\Curso::count();
+        $alunos = App\Models\Aluno::count();
 
-    Route::view('/','main.certificados');
+        $instrutores = App\Models\Instrutor::count();
 
-});
-// rotas instrutores
-Route::middleware([UsuarioLogado::class,Admin::class])->prefix('/instrutores')->group(function(){
+        return view('main.dashboard', ['turmas' => $turmas, 'cursos' => $cursos, 'alunos' => $alunos, 'instrutores' => $instrutores, 'dados' => $dados]);
+    });
+    Route::middleware([Secretaria::class])->prefix("/alunos")->group(function () {
 
-    Route::view('/','main.instrutores');
-});
-//rotas turmas
-Route::middleware([Admin::class,UsuarioLogado::class])->prefix('/turmas')->group(function () {
+        Route::get("/", [AlunoController::class, 'index']);
+        Route::get('/form', [AlunoController::class, 'form']);
+        Route::post("/criar", [AlunoController::class, 'create']);
+        Route::post('/atualizar', [AlunoController::class, 'update']);
+        Route::get('/deletar/{id}', [AlunoController::class, 'delete']);
+        Route::get('/{id}', [AlunoController::class, 'show']);
+        Route::get('/ficha/{id}', [AlunoController::class, 'doc_pdf']);
+    });
+    Route::middleware([Secretaria::class])->prefix("/estagiarios")->group(function () {
 
-    Route::get('/',[TurmaController::class,'index']);
-    Route::post('/criar',[TurmaController::class,'create']);
-    Route::get('/alunos/{id}',[TurmaController::class,'show']);
-    Route::post('/atualizar',[TurmaController::class,'update']);
-    Route::post('/enturmar',[TurmaController::class,'store']);
-    Route::get('/deletar/{id}',[TurmaController::class,'delete']);
-});
-//rotasde pagamentos
-Route::middleware([UsuarioLogado::class])->prefix('/pagamentos')->group(function () {
+        Route::view('/', 'main.estagiarios');
+    });
+    Route::middleware([Secretaria::class])->prefix('/pagamentos')->group(function () {
 
-    Route::get('/', [PagamentoController::class, 'index']);
-    Route::post('/criar', [PagamentoController::class, 'create']);
-    Route::get('/ver/{id}', [PagamentoController::class, 'show']);
+        Route::get('/', [PagamentoController::class, 'index']);
+        Route::post('/criar', [PagamentoController::class, 'create']);
+        Route::get('/ver/{id}', [PagamentoController::class, 'show']);
+    });
+    ##------------------------------------------------------------------------------
+
+    ##nivel de acesso pedagogia
+
+    Route::middleware([Pedagogia::class])->prefix("/faltas")->group(function () {
+
+        Route::view('/', 'main.assiduidades');
+    });
+    Route::middleware([Pedagogia::class])->prefix("/certificados")->group(function () {
+
+        Route::view('/', 'main.certificados');
+    });
+    Route::middleware([Pedagogia::class])->prefix('/desempenho')->group(function () {
+
+        Route::view('/', 'main.desempenho');
+    });
+
+
+    #-------------------------------------------------------------------------------
+    ##niveis de aceso admin
+    Route::middleware([Admin::class])->prefix('/usuarios')->group(function () {
+
+        Route::get('/', [UsuarioController::class, 'index']);
+        Route::post('/criar', [UsuarioController::class, 'create']);
+        Route::post('/atualizar', [UsuarioController::class, 'update']);
+        Route::get('/deletar/{id}', [UsuarioController::class, 'delete']);
+    });
+
+    Route::middleware([Admin::class, UsuarioLogado::class])->prefix('/cursos')->group(function () {
+
+        Route::get('/', [CursoController::class, 'index']);
+        Route::get('/alunos/{id}', [CursoController::class, 'show']);
+        Route::post('/criar', [CursoController::class, 'create']);
+        Route::post('/atualizar', [CursoController::class, 'update']);
+        Route::get('/deletar/{id}', [CursoController::class, 'delete']);
+    });
+    Route::middleware([Admin::class, UsuarioLogado::class])->prefix('/turmas')->group(function () {
+
+        Route::get('/', [TurmaController::class, 'index']);
+        Route::post('/criar', [TurmaController::class, 'create']);
+        Route::get('/alunos/{id}', [TurmaController::class, 'show']);
+        Route::post('/atualizar', [TurmaController::class, 'update']);
+        Route::post('/enturmar', [TurmaController::class, 'store']);
+        Route::get('/deletar/{id}', [TurmaController::class, 'delete']);
+    });
+
+    Route::middleware([Admin::class])->prefix('/instrutores')->group(function () {
+
+        Route::view('/', 'main.instrutores');
+    });
+    #-------------------------------------------------------------------------------------------
 });

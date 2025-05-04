@@ -28,6 +28,19 @@ class AlunoController extends Controller
 
         return view("main.alunos", ['alunos' => $alunos, 'cursos' => $_cursos]);
     }
+    public function form()
+    {
+
+        $cursos = Curso::all();
+        $_cursos = [];
+
+        foreach ($cursos as $curso) {
+
+            array_push($_cursos, ['label' => $curso->nome, 'value' => $curso->id]);
+        }
+
+        return view('forms.criarAluno',['cursos' => $_cursos]);
+    }
 
     public function show($id)
     {

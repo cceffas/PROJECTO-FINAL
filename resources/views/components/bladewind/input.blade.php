@@ -38,8 +38,8 @@
     // how should error messages be displayed for this input
     // by default error messages are displayed in the Bladewind notification component
     // the component should exist on the page
-    'show_error_inline' => config('bladewind.input.show_error_inline', false),
-    'showErrorInline' => config('bladewind.input.show_error_inline', false),
+    'show_error_inline' => config('bladewind.input.show_error_inline', true),
+    'showErrorInline' => config('bladewind.input.show_error_inline', true),
     // for numeric input only: should the numbers include dots
     'with_dots' => true,
     'withDots' => true,

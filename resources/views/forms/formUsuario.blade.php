@@ -26,7 +26,7 @@
             <tr>
                 <td>{{$usuario->id}}</td>
                 <td>{{$usuario->nome}}</td>
-                <td>{{$usuario->cargo}}</td>
+                <td>{{$usuario->acesso}}</td>
                 @if($usuario->estatus=='ON')
                 <td><x-bladewind::tag color='green' label="{{$usuario->estatus}}" /></td>
                 @else
@@ -34,9 +34,9 @@
                 @endif
                 <td>
                     <div class="flex gap-2">
-                        <x-bladewind::button color="red" onclick="showModal('{{ $usuario->id }}')"><i class="bi-trash"></i></x-bladewind::button>
+                        <x-bladewind::button color="slate" onclick="showModal('{{ $usuario->id }}')"><i class="bi-trash"></i></x-bladewind::button>
                         {{-- end --}}
-                        <x-bladewind::button color='green' onclick="showModal('{{ $usuario->id }}edit')"><i class="bi-pencil"></i></x-bladewind::button>
+                        <x-bladewind::button color='blue' onclick="showModal('{{ $usuario->id }}edit')"><i class="bi-pencil"></i></x-bladewind::button>
                     </div>
                 </td>
             </tr>
@@ -74,11 +74,11 @@
                             <x-bladewind::card>
                                 <h1 class="">Nivel de acesso</h1>
                                 <div class="flex flex-wrap p-2">
-                                    @foreach($cargos as $item)
-                                    @if(session()->get('cargo')==$item)
-                                    <x-bladewind::radio label="{{ $item }}" value="{{$item}}" name='cargo' checked=true />
+                                    @foreach($acessos as $item)
+                                    @if(session()->get('acesso')==$item)
+                                    <x-bladewind::radio label="{{ $item }}" value="{{$item}}" name='acesso' checked=true />
                                     @else
-                                    <x-bladewind::radio label="{{ $item }}" value="{{$item}}" name='cargo' />
+                                    <x-bladewind::radio label="{{ $item }}" value="{{$item}}" name='acesso' />
                                     @endif
                                     @endforeach
                                 </div>
@@ -111,8 +111,8 @@
                             <x-bladewind::card>
                                 <h1 class="">Nivel de acesso</h1>
                                 <div class="flex flex-wrap p-2">
-                                    @foreach($cargos as $item)
-                                    <x-bladewind::radio label="{{ $item }}" value="{{$item}}" name='cargo' />
+                                    @foreach($acessos as $item)
+                                    <x-bladewind::radio label="{{ $item }}" value="{{$item}}" name='acesso' />
                                     @endforeach
                                 </div>
                             </x-bladewind::card>

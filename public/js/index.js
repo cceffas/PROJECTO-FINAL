@@ -39,18 +39,21 @@ async function changeScreen(url, id_element) {
 
 
 
+function asideHide() {
+
+    document.getElementById('asidebar').classList.toggle('hidden')
+}
+
 /*colorir os botoens do aside bar caso forem pressinados*/
 
 const aside_buttons = document.querySelectorAll('#asidebar a')
 
 
-aside_buttons.forEach(function(element, index) {
+aside_buttons.forEach(function (element, index) {
 
 
     if (element.href == location) {
-        element.classList.add('bg-blue-500')
-        element.classList.add('text-white')
-
+        element.classList.add('text-white', 'bi-chevron-down');
     }
 
 });

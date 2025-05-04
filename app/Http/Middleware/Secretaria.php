@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Admin
+class Secretaria
 {
     /**
      * Handle an incoming request.
@@ -16,16 +16,11 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
 
+        $acess = session()->get('acesso');
 
-        $acess=session()->get('acesso');
-
-        if($acess=='admin'){
-
+        if ($acess == 'secretaria' || $acess == 'admin') {
             return $next($request);
         }
-        else{
-
-            return redirect('/panel');
-        }
+        return redirect('/');
     }
 }

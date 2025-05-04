@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
+
+@php
+
+    use App\Models\Usuario;
+
+    $user = Usuario::find(session()->get('user_id'));
+    $notificacoes = $user->notificacoes()->where('estatus', '=', 'ON')->get();
+
+    // return dd($notificacoes->count());
+
+@endphp
+{{-- end --}}
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>gestPlusCenter</title>
     {{-- icons link --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel='stylesheet' href='{{ asset("icons/bootstrap-icons.min.css") }}'>
-    <link rel="stylesheet" href='{{ asset("/css/scroll.css") }}'>
+    <link rel='stylesheet' href='{{ asset('icons/bootstrap-icons.min.css') }}'>
+    <link rel="stylesheet" href='{{ asset('css/scroll.css') }}'>
     {{-- bladewind components --}}
     <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
@@ -16,6 +29,8 @@
     {{-- my css link --}}
     {{-- my js script --}}
     <script src="{{ asset('js/index.js') }}" defer></script>
+    <script src="{{ asset('js/validate.js') }}" defer></script>
+
     {{-- <script src="./js/index.js" defer></script> --}}
     {{-- <script src="./js/components.js" defer></script> --}}
     <script src="./js/validate.js"></script>
@@ -26,35 +41,42 @@
 
 <body class="relative flex w-full h-screen overflow-hidden  bg-slate-800">
     {{-- first --}}
-    <header id="header" class="absolute top-0 flex items-center justify-center w-full h-20 z-40 backdrop-blur shadow-lg ">
-        <div class="flex items-center font-bold gap-2 ml-8">
-            <h1 class=" flex items-center justify-center p-2 size-12 bg-blue-500 rounded-full text-2xl  text-center text-white">G+</h1>
-            <h2 class='capitalize text-blue-500'>center</h2>
+    <header id="header"
+        class="absolute top-0 flex items-center justify-center w-full h-20 z-40 backdrop-blur shadow-lg bg-blue-800/20">
+
+
+        <div class='ml-10 text-blue-400'>
+            <button class='flex items-center justify-center size-8 p-2 rounded bg-white/10' onclick='asideHide()'><i
+                    class='bi bi-layout-sidebar'></i></button>
         </div>
+        {{-- end --}}
+        <x-logo-mark />
         {{-- end --}}
         <div class="flex  justify-end items-center w-full pr-10 gap-2">
             <x-bladewind::theme-switcher />
             <div class="relative p-2 flex items-center justify-center hover:bg-slate-400/20 rounded">
                 <a href="/notifications" class="flex"><i class="bi bi-bell-fill text-2xl text-slate-400"></i></a>
                 {{-- end --}}
-                <span class="size-2 bg-red-500 overflow-hidden p-2 text-sm flex justify-center items-center text-white rounded-full absolute top-2 left-5 animate-bounce">9</span>
+
+                @if ($notificacoes->count() > 0)
+                    <span
+                        class="size-2 bg-red-500 overflow-hidden p-2 text-sm flex justify-center items-center text-white rounded-full absolute top-2 left-5 animate-bounce">{{ $notificacoes->count() }}</span>
+                @endif
             </div>
             {{-- end --}}
-            <x-bladewind::dropmenu hover='true'>
-                <x-slot:trigger>
-                    <div class="p-2 flex items-center justify-center hover:bg-slate-400/20 rounded">
-                        <i class="bi bi-list text-slate-400 text-4xl"></i>
-                    </div>
-                </x-slot:trigger>
-                {{-- end --}}
-                <x-bladewind::dropmenu.item>
-                    <button class="flex items-center justify-center text-red-500" onclick="showModal('sair')">
-                        sair
-                    </button>
-                </x-bladewind::dropmenu.item>
-                {{-- end --}}
-            </x-bladewind::dropmenu>
-            {{-- end --}}
+            <p class='text-slate-400'>|</p>
+
+
+            <a href='/usuarios/'>
+                <div class="relative flex items-center justify-center p-2 rounded text-slate-500 bg-slate-500/10">
+
+                    <i class='bi bi-person-fill'></i>
+                    <h1 class='overflow-hidden font-bold w-full text-center'>{{ $user->nome }}</h1>
+                    <span class='absolute top-0 size-2 bg-red-500 right-0 rounded-full'><span>
+                </div>
+            </a>
+
+
         </div>
     </header>
     <!-- /header -->
@@ -73,7 +95,8 @@
         <x-bladewind::modal name="sair" show_action_buttons=false>
             <form method="get" action="/sair" class="flex flex-col items-center justify-between w-full h-32 ">
                 @csrf
-                <i class="bi-box-arrow-left flex justify-center items-center text-red-500 size-8 rounded-full bg-red-500/50 text-lg"></i>
+                <i
+                    class="bi-box-arrow-left flex justify-center items-center text-red-500 size-8 rounded-full bg-red-500/50 text-lg"></i>
                 <h1 class="text-lg text-red-500">quer sair?</h1>
                 <div class="flex justify-end gap-2 w-full">
                     <x-bladewind::button type='secondary' onclick="hideModal('sair')">Não</x-bladewind::button>
@@ -83,16 +106,14 @@
         </x-bladewind::modal>
         {{-- end modal --}}
         <x-bladewind.notification type='sucess' />
-        @if(session()->has('sucess'))
-        <script>
-        showNotification('sucesso!', "{{ session()->get('sucess') }} ")
-
-        </script>
+        @if (session()->has('sucess'))
+            <script>
+                showNotification('sucesso!', "{{ session()->get('sucess') }} ")
+            </script>
         @elseif(session()->has('error'))
-        <script>
-        showNotification('falhou!', "{{ session()->get('error') }}", 'error')
-
-        </script>
+            <script>
+                showNotification('falhou!', "{{ session()->get('error') }}", 'error')
+            </script>
         @endif
     </main>
     @livewireScripts()

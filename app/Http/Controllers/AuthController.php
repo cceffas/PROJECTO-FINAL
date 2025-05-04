@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notificacao;
 use App\Models\Usuario;
-use GuzzleHttp\Cookie\SetCookie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Validator;
+
 
 class AuthController extends Controller
 {
@@ -14,45 +17,70 @@ class AuthController extends Controller
     }
     public function entrar(Request $dados)
     {
-        $usuario = Usuario::where('nome', '=', $dados->nome)->first();
 
+        $validacao = Validator::make($dados->all(), ['nome' => 'required', 'senha' => 'required']);
+
+        if ($validacao->fails()) {
+
+            return redirect('/')->with('error', 'preancha todos os campos!');
+        }
+
+        $usuario = Usuario::where('nome', '=', $dados->nome)->first();
+        $message_erro = 'Credencias Invalidos!';
 
 
         if ($usuario) {
 
             if (password_verify($dados->senha, $usuario->senha)) {
 
-                cookie("user$dados->id", true, 2880 * 60);
-                session(['logado' => true]);
-                session(['id' => $usuario->id]);
-                session(['cargo' => $usuario->cargo]);
+
+
+                if ($usuario->estatus == 'ON') {
+
+                    $notificacao = new Notificacao();
+                    $notificacao->tipo = 'alerta';
+                    $notificacao->descricao='alguém tentou logar com as suas credencias';
+                    $notificacao->usuario()->associate($usuario);
+                    $notificacao->save();
+
+
+                    return redirect('/')->with('error', 'acesso negado!');
+                
+                }
+                session(['user_id' => $usuario->id]);
+                session(['acesso' => $usuario->acesso]);
+                Cookie('user', $usuario->id,24*60*60);
+
                 $usuario->estatus = 'ON';
                 $usuario->update();
 
-                return redirect('/usuarios/');
+                return redirect('/panel/');
             } else {
 
-                return redirect('/')->with('error', 'dados invalidos!');
+                return redirect('/')->with('error', $message_erro);
             }
         } else {
 
-            return redirect('/')->with('error', 'dados invalidos!');
+            return redirect('/')->with('error', $message_erro);
         }
     }
     public function sair()
     {
 
+        $id = session()->get('user_id');
 
-        $usuario = Usuario::find(session()->get('id'));
+        if ($id != null) {
 
-        if (session()->has('logado')) {
+            $usuario = Usuario::find($id);
 
-            session()->flush();
-            $usuario->estatus = 'OFF';
-            $usuario->update();
-            cookie("user$usuario->id", null);
+            if (session()->has('user_id')) {
 
-            return redirect('/');
+                $usuario->estatus = 'OFF';
+                $usuario->update();
+                session()->flush();
+
+                return redirect('/');
+            }
         }
     }
 } {

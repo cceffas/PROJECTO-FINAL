@@ -1,23 +1,24 @@
-const anyText = document.querySelectorAll('#any-text')
+
+const regex_anyText = /[^A-Za-z-0-\s]/g
 
 
+function gerateValidationElements(id, regex) {
 
+    $array = document.querySelectorAll(`#${id}`)
 
-if (anyText != null) {
+    if ($array != null) {
 
-    anyText.forEach((input) => {
+        $array.forEach((item) => {
 
+            item.addEventListener('input', function () {
 
-        input.addEventListener('input', function() {
+                this.value = this.value.replace(regex,'')
+            })
 
-
-
-            this.value = this.value.replace(/[^A-Za-z]/g, "")
         })
-
-
-
-    });
-
+    }
 
 }
+
+gerateValidationElements('any-text', regex_anyText)
+// gerateValidationElements('any-tel', regex_tel)

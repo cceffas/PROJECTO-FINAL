@@ -16,7 +16,7 @@ class UsuarioNaoLogado
     public function handle(Request $request, Closure $next): Response
     {
 
-        if(!session()->has('logado')){
+        if(!session()->has('acesso')){
 
         return $next($request);
 

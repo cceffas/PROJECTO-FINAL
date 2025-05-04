@@ -5,5 +5,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model
 {
-    protected $fillable = ['nome', 'cargo', 'senha'];
+    protected $fillable = ['nome', 'acesso', 'senha'];
+
+
+
+    public function notificacoes(){
+
+        return $this->hasMany(Notificacao::class);
+    }
 }

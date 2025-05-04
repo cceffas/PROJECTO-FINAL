@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -17,12 +18,11 @@ class UsuarioLogado
 
         //verificar se o usuario esta logado
 
-        if (session()->has('logado')) {
+        if (session()->has('acesso')) {
             return $next($request);
         } else {
 
             return redirect('/');
         }
-
     }
 }
