@@ -37,19 +37,23 @@
             </x-slot>
 
 
-            @for ($n=0;$n<12;$n++)
-                <tr>
-                <td>aluno{{$n}}</td>
-                <td>9</td>
-                <td>9</td>
-                <td>9</td>
-                <td>9</td>
-                <td>9</td>
-                <td>9</td>
-                <td>9</td>
-         
-                </tr>
-                @endfor
+
+
+            @if(sizeof($alunos)>0)
+            @foreach ( $alunos as $aluno )
+
+            <tr>
+
+                <td>{{$aluno->nome}}</td>
+                @foreach ( $aluno->notas()->get() as $nota )
+                <td><div class="cursor-pointer" contenteditable="true">{{$nota->valor}}</div></td>
+                @endforeach
+
+
+            </tr>
+            @endforeach
+            @endif
+
 
         </x-bladewind::table>
 

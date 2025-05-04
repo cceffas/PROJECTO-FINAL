@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Aluno;
 use App\Models\Curso;
+use App\Models\Nota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
@@ -39,7 +40,7 @@ class AlunoController extends Controller
             array_push($_cursos, ['label' => $curso->nome, 'value' => $curso->id]);
         }
 
-        return view('forms.criarAluno',['cursos' => $_cursos]);
+        return view('forms.criarAluno', ['cursos' => $_cursos]);
     }
 
     public function show($id)
@@ -75,7 +76,7 @@ class AlunoController extends Controller
             'nome'           => 'required|string|max:255',
             'bi'             => 'required|string|size:14',
             'tel' => 'min:0|max:9',
-            'curso'          => 'required|exists:cursos,id',
+            'curso'          => 'required',
             'dt_nascimento'  => ['required', 'date', "after_or_equal:{$dataMinima->format('Y-m-d')}", "before_or_equal:{$dataMaxima->format('Y-m-d')}"],
             'foto'           => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
@@ -84,10 +85,7 @@ class AlunoController extends Controller
         ]);
 
         if ($validacao->fails()) {
-            return redirect('/alunos/')
-                ->withErrors($validacao)
-                ->withInput()
-                ->with('error', 'Preencha todos os campos obrigatórios e obedeça os critérios de validação.');
+            return redirect()->back()->with('error', 'Preencha todos os campos obrigatórios e obedeça os critérios de validação.');
         }
 
         // Upload da imagem
@@ -108,8 +106,18 @@ class AlunoController extends Controller
 
         // Associação com curso
         if ($salvo) {
+
+            for ($n = 0; $n < 6; $n++) {
+
+                $notas = new Nota();
+                $notas->valor = 0;
+                $notas->aluno()->associate($novoAluno);
+                $notas->save();
+            }
+
             $curso = Curso::find($dados->curso);
             $novoAluno->cursos()->attach($curso);
+
 
             return redirect('/alunos/')->with('sucess', 'Aluno cadastrado com sucesso!');
         } else {

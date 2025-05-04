@@ -9,6 +9,8 @@ use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TurmaController;
 use App\Http\Controllers\InstrutorController;
+use App\Http\Controllers\NotaController;
+
 use App\Http\Controllers\NotificacaoController;
 // controllers end
 use App\Http\Middleware\UsuarioNaoLogado;
@@ -116,6 +118,7 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
     Route::middleware([Pedagogia::class])->prefix('/desempenho')->group(function () {
 
         Route::view('/', 'main.desempenho');
+        Route::get('/{curso_id}/{turma_id}', [NotaController::class, 'show']);
     });
 
 
