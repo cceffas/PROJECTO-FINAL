@@ -43,13 +43,13 @@ class PagamentoController extends Controller
     {
 
 
-        $aluno = Aluno::find($id);
+        $pagamento = Pagamento::find($id);
 
 
-        if ($aluno != null) {
+        if ($pagamento != null) {
 
-            $pdf = Pdf::loadView('pdf.ficha', ['aluno' => $aluno]);
-            return $pdf->stream($aluno->nome);
+            $pdf = Pdf::loadView('pdf.ficha', ['pagamento' => $pagamento]);
+            return $pdf->stream($pagamento->created_at);
         }
     }
 
@@ -69,7 +69,8 @@ class PagamentoController extends Controller
 
                 $arquivo = $dados->file('comprovativo');
                 $nomeArquivo = time() . '_' . $arquivo->getClientOriginalName();
-                $caminho = $arquivo->storeAs('comprovativos', $nomeArquivo, 'public');
+                $arquivo->move(public_path('uploads'), $nomeArquivo);
+                
 
 
 
@@ -94,25 +95,6 @@ class PagamentoController extends Controller
         }
 
 
-        $aluno = Aluno::find($dados->aluno);
 
-        if ($aluno != null) {
-
-            $name_pdf = "$aluno->id" . "$aluno->nome" . date('dmY') . ".pdf";
-            $novo_pagamento = new Pagamento();
-
-            $novo_pagamento->montante = $dados->montante;
-            $novo_pagamento->assunto = $dados->assunto;
-            $novo_pagamento->agente = $dados->agente;
-
-            $novo_pagamento->doc = $name_pdf;
-            $novo_pagamento->aluno()->associate($aluno);
-            $novo_pagamento->save();
-
-            return redirect()->back()->with('sucess', 'o pagamento foi registrado com sucesso!');
-        }
-
-
-        return redirect()->back()->with('error', 'ocorreu um erro!');
     }
 }

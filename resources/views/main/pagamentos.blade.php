@@ -7,38 +7,9 @@
     <div class="mt-20 space-y-10">
         <x-Title-app title='pagamentos' icon='bi-credit-card' action='/pagamentos/form' />
         {{-- end --}}
-        <x-bladewind::card>
-            <form action="/pagamentos/" method="get">
-                <h1 class="text-slate-500 mb-3">pesquise o pagamento pelo nome e filtre por curso</h1>
 
-                <div class="flex items-center gap-1 mb-2">
-
-                    <input type="text" name="nome"
-                        class="border-slate-200 border-2  rounded-md placeholder-slate-300 grow text-slate-500 bg-transparent"
-                        placeholder="pesquise pelo codigo do pagamento">
-                    {{-- end --}}
-                    <select name="curso"
-                        class="border-slate-200 border-2 rounded-md placeholder-slate-300 text-slate-500">
-                        @isset($cursos)
-                            @foreach ($cursos as $curso)
-                                <option value="{{ $curso->id }}">{{ $curso->nome }}</option>
-                            @endforeach
-                        @endisset
-                    </select>
-                    <select name="estatus"
-                        class="border-slate-200 border-2 rounded-md placeholder-slate-300 text-slate-500">
-                        <option value="pago">Pago</option>
-                        <option value="devedor">sem pagamentos</option>
-                    </select>
-                </div>
-                {{-- end --}}
-                <x-bladewind::button can_submit=true>pesquisar</x-bladewind::button>
-            </form>
-        </x-bladewind::card>
-        {{-- end card pagamentos --}}
-
-        <x-bladewind::card title="pagamentos efetuados">
-            <x-bladewind::table>
+        <x-bladewind::card title="pagamentos efetuados" >
+            <x-bladewind::table searchable='true'>
 
                 <x-slot name="header">
                     <tr>
@@ -48,7 +19,7 @@
                         <th>Descricao</th>
                         <th>quantia</th>
                         <th>agente</th>
-                        <th>fatura</th>
+                        <th>detalhes</th>
                         <th>data de emição</th>
 
 
@@ -67,9 +38,74 @@
                             <td>{{ $pagamento->descricao }}</td>
                             <td>{{ $pagamento->valor . ' kz' }}</td>
                             <td>{{ $pagamento->usuario->nome }}</td>
-                            <td><a href="{{asset('uploads/'.$pagamento->fatura) }}">fatura</a></td>
+                            <td><x-bladewind::button onclick="showModal('{{ $pagamento->id }}')"><i
+                                        class="bi bi-file-text"></i></x-bladewind::button></td>
+
                             <td>{{ $pagamento->created_at->format('d-m-Y') }}</td>
 
+                            <x-bladewind::modal size="large" name="{{ $pagamento->id }}" show_action_buttons='false'>
+                                <div class="p-6 text-gray-800 text-sm font-sans">
+                                    <!-- Cabeçalho com dados e foto -->
+                                    <div class="flex items-center justify-between mb-6 border-b pb-4">
+                                        <div>
+                                            <h2 class="text-xl font-semibold text-gray-900 mb-1">Comprovante de Pagamento
+                                            </h2>
+                                            <p><strong>Emitido em:</strong>
+                                                {{ $pagamento->created_at->format('d/m/Y H:i') }}</p>
+                                            <p><strong>Agente:</strong> #{{ $pagamento->usuario->nome }}</p>
+                                        </div>
+                                        <div class="w-24 h-24 rounded overflow-hidden border">
+                                            <img src="{{ asset('uploads/' . $pagamento->aluno->foto) }}"
+                                                alt="Foto do Aluno" class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+
+                                    <!-- Informações do aluno -->
+                                    <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div>
+                                            <p><strong>Nome do Aluno:</strong><br>{{ $pagamento->aluno->nome }}</p>
+                                        </div>
+                                        <div>
+                                            <p><strong>Email do Aluno:</strong><br>{{ $pagamento->aluno->email }}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Informações do pagamento -->
+                                    <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div>
+                                            <p><strong>Valor
+                                                    Pago:</strong><br>{{ number_format($pagamento->valor, 2, ',', '.') }}
+                                                KZ</p>
+                                        </div>
+                                        <div>
+                                            <p><strong>Método de Pagamento:</strong><br>{{ $pagamento->m_pagamento }}</p>
+                                        </div>
+                                        <div>
+                                            <p><strong>Referência:</strong><br>{{ $pagamento->referencia }}</p>
+                                        </div>
+                                        <div>
+                                            <p><strong>Descrição:</strong><br>{{ $pagamento->descricao }}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Link para comprovativo -->
+                                    <div class="mt-4">
+                                        <strong>Comprovativo de Pagamento:</strong><br>
+                                        <a href="{{ asset('uploads/' . $pagamento->comprovativo) }}" target="_blank"
+                                            class="text-blue-600 underline hover:text-blue-800">
+                                            Visualizar Comprovativo
+                                        </a>
+                                    </div>
+
+                                    {{-- gerar recibo --}}
+                                    <div class="flex items-center justify-end mt-4">
+
+                                        <form action="/pagamentos/{{ $pagamento->id }}" action="get">
+                                            <x-bladewind::button can_submit='true'>gerar fatura</x-bladewind::button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </x-bladewind::modal>
 
 
                         </tr>

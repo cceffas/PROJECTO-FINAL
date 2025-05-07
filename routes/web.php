@@ -109,9 +109,8 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
 
         Route::get('/', [PagamentoController::class, 'index']);
         Route::get('/form', [PagamentoController::class, 'form']);
-
         Route::post('/criar', [PagamentoController::class, 'create']);
-        Route::get('/ver/{id}', [PagamentoController::class, 'show']);
+        Route::get('/{id}', [PagamentoController::class, 'show']);
     });
     ##------------------------------------------------------------------------------
 

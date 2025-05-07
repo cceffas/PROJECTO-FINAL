@@ -68,6 +68,8 @@ class TurmaController extends Controller
       
 
 
+        if($dados->item==null) return redirect()->back()->with('error','nenhum aluno selecionado');
+
         $turma_selecionado=Turma::find($dados->id);
         $limit=$turma_selecionado->qtd_aluno;
 
