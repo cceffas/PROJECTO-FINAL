@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +14,14 @@ return new class extends Migration
         Schema::create('pagamentos', function (Blueprint $table) {
 
             $table->id();
-            $table->string('doc');
-            $table->float('montante');
-            $table->string('assunto');
-            $table->string('agente');
+            $table->decimal('valor');
+            $table->string('m_pagamento');
+            $table->float('referencia');
+            $table->string('descricao');
+            $table->text('comprovativo');
             $table->foreignId('aluno_id')->constrained()->onDelete('cascade');
+            $table->foreignId('usuario_id')->constrained()->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -28,6 +32,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists("pagamentos");
-        
     }
 };

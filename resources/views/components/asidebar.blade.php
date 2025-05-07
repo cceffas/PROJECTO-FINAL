@@ -57,11 +57,17 @@
             {{-- end --}}
             <li class=" w-full"><a href="/turmas/"
                     class=" text-slate-500 flex items-center p-2 h-12 min-w-full rounded-md hover:text-blue-500 capitalize gap-2 "><i
-                        class="bi-collection text-xl"></i>Turmas</a></li>
+                        class="bi-door-open text-xl"></i>Turmas</a></li>
             {{-- end --}}
             <li class=" w-full"><a href="/cursos/"
                     class=" text-slate-500 flex items-center p-2 h-12 min-w-full rounded-md hover:text-blue-500 capitalize gap-2 "><i
                         class="bi-collection text-xl"></i>cursos</a></li>
+            <li class=" w-full"><a href="/institutos/"
+                    class=" text-slate-500 flex items-center p-2 h-12 min-w-full rounded-md hover:text-blue-500 capitalize gap-2 "><i
+                        class="bi-houses-fill text-xl"></i>institutos</a></li>
+            <li class=" w-full"><a href="/planos/"
+                    class=" text-slate-500 flex items-center p-2 h-12 min-w-full rounded-md hover:text-blue-500 capitalize gap-2 "><i
+                        class="bi-journal text-xl"></i>estagios</a></li>
         </ul>
 
         <hr class="border-slate-600">

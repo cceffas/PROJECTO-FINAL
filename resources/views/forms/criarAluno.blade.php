@@ -1,62 +1,129 @@
 @extends('layouts.App')
 
 @section('content')
-    <div class=" mt-20 space-y-10">
+    @php
+        $class_input =
+            'apaerence-none bg-transparent w-full border-none outline outline-1 outline-slate-300 focus:outline-blue-500 text-slate-500 placeholder-slate-400/50';
+    @endphp
+    <div class="mt-20 space-y-10">
 
 
-        <x-bladewind::card>
-            <div class="flex justify-between items-center">
-                <h1 class="uppercase text-gray-500"><i class="bi-people-fill"></i> alunos>Registrar </h1>
-                <x-bladewind::button type='secondary' tag='a' href='/alunos/'>voltar</x-bladewind::button>
-            </div>
-        </x-bladewind::card>
-        <x-bladewind::card>
-            <div>
-                <form action="/alunos/criar" method="post" enctype="multipart/form-data">
+        <x-Title-App title="alunos > registrar" icon="bi bi-person" type='secondary' action="/alunos" text-action='voltar' />
+
+
+        @if (sizeof($cursos) > 0)
+            <x-bladewind::card>
+                <form action="/alunos/criar" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
-                    <div class="flex flex-col justify-center items-center text-gray-600 mb-4">
-                        <i class="bi-people-fill text-4xl"></i>
-                        <h1>Registrar aluno</h1>
+
+                    <!-- Nome -->
+                    <div>
+                        <label for="nome" class="block text-sm font-medium text-slate-600 mb-1">Nome</label>
+                        <div class="flex items-center border border-slate-300 rounded">
+                            <i class="bi-person-fill text-slate-400 p-2"></i>
+                            <input type="text" id="any-text" name="nome" maxlength="50" required
+                                pattern="^[A-Za-zÀ-ÿ\s]{3,50}$" class="{{ $class_input }}"
+                                placeholder="Domingos Nosso..(no máximo 50 caracteres)">
+                        </div>
                     </div>
-                    {{-- end --}}
-                    <x-bladewind::input type="text" label='Nome' name='nome' required id='any-text' />
-                    <x-bladewind::input type="email" label='Email' name='email' />
-                    <div class="flex gap-2">
-                        <x-bladewind::input label='telefone' type='text' name='tel' id='any-tel' errorMessage='deve conter 9 numeros' maxlengh='9'/>
-                        <x-bladewind::input label='numero de BI' name='bi' required />
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-600 mb-1">Email</label>
+                        <div class="flex items-center border border-slate-300 rounded">
+                            <i class="bi-envelope-fill text-slate-400 p-2"></i>
+                            <input type="email" id="any-email" name="email"
+                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$" class="{{ $class_input }}"
+                                placeholder="example@email.com">
+                        </div>
                     </div>
-                    {{-- end --}}
-                    <livewire:datetime label='data de nascimento' name='dt_nascimento' />
-                    {{-- end --}}
-                    <x-bladewind::select label='curso' name='curso' :data="$cursos" />
-                    {{-- end --}}
-                    <x-bladewind::card>
-                        <h1 class="capitalize">sexo</h1>
-                        <div class="flex flex-wrap p-2">
-                            <x-bladewind::radio label="Masculino" value="M" name='sexo' />
-                            <x-bladewind::radio label="Femenino" value="F" name='sexo' />
+
+                    <!-- Telefones e BI -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="tel" class="block text-sm font-medium text-slate-600 mb-1">Telefone</label>
+                            <div class="flex items-center border border-slate-300 rounded">
+                                <i class="bi-telephone-fill text-slate-400 p-2"></i>
+                                <input type="text" id="any-tel" name="tel" maxlength="9" required
+                                    pattern="^9\d{8}$" class="{{ $class_input }}" placeholder="9 dígitos começando por 9">
+                            </div>
                         </div>
-                    </x-bladewind::card>
-                    <div class="mt-4 mb-4"></div>
-                    {{-- end select radius --}}
-                    {{-- end --}}
-                    <x-bladewind.filepicker name='foto' acceptedFileTypes='image/*' placeholder="Foto passe" required />
-                    {{-- file --}}
-                    @if ($cursos)
-                        <div class="flex justify-end gap-4 mt-2">
-                            <x-bladewind::button type='secondary'
-                                onclick="hideModal('aluno')">cancelar</x-bladewind::button>
-                            <x-bladewind::button can_submit=true>confirmar</x-bladewind::button>
+
+                        <div>
+                            <label for="bi" class="block text-sm font-medium text-slate-600 mb-1">Número de BI</label>
+                            <div class="flex items-center border border-slate-300 rounded">
+                                <i class="bi-card-text text-slate-400 p-2"></i>
+                                <input type="text" id="any-bi" name="bi" required maxlength="14"
+                                    pattern="^\d{9}[A-Z]{2}\d{3}$" class="{{ $class_input }}"
+                                    placeholder="006984317LA098 (14 caracteres)">
+                            </div>
                         </div>
-                    @else
-                        <div class="flex flex-col gap-2 items-center justify-center w-full">
-                            <p class="text-red-500">Não é possivel registrar um aluno sem existir um cursos!</p>
-                            <a href="/cursos/" class="text-blue-500 underline">criar um curso!</a>
+                    </div>
+
+                    <!-- Data de Nascimento -->
+                    <div>
+                        <label for="dt_nascimento" class="block text-sm font-medium text-slate-600 mb-1">Data de
+                            Nascimento</label>
+                        <div class="flex items-center border border-slate-300 rounded">
+                            <i class="bi-calendar-fill text-slate-400 p-2"></i>
+                            <input type="date" id="dt_nascimento" name="dt_nascimento" required
+                                class="{{ $class_input }}" min="1980-01-01" max="2015-01-01">
                         </div>
-                    @endif
+                    </div>
+
+                    <!-- Curso -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="curso" class="block text-sm font-medium text-slate-600 mb-1">Curso</label>
+                            <div class="flex items-center border border-slate-300 rounded">
+                                <i class="bi-book-fill text-slate-400 p-2"></i>
+                                <select id="curso" name="curso" required class="{{ $class_input }}">
+                                    @foreach ($cursos as $curso)
+                                        <option value="{{ $curso->id }}">{{ $curso->nome }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Gênero -->
+                        <div>
+                            <label for="sexo" class="block text-sm font-medium text-slate-600 mb-1">Gênero</label>
+                            <div class="flex items-center border border-slate-300 rounded">
+                                <i class="bi-gender-ambiguous text-slate-400 p-2"></i>
+                                <select id="sexo" name="sexo" required class="{{ $class_input }}">
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Feminino</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Foto -->
+                    <div>
+                        <label for="foto" class="block text-sm font-medium text-slate-600 mb-1">Foto (Passe)</label>
+                        <x-bladewind::filepicker name="foto" accepted_file_types='image/*' max_file_size='10mb'
+                            placeholder="Foto passe" required />
+                    </div>
+
+                    <!-- Ações -->
+                    <div class="flex justify-end gap-4 mt-4">
+                        <x-bladewind::button type='secondary'>cancelar</x-bladewind::button>
+                        <x-bladewind::button can_submit='true'>confirmar</x-bladewind::button>
+                    </div>
                 </form>
-            </div>
-        </x-bladewind::card>
+            </x-bladewind::card>
+        @else
+            <x-bladewind::card>
+                <div class="flex flex-col items-center gap-4">
+
+                    <x-bladewind::tag  color='red' label='sem cursos disponiveis não é possivel adicionar alunos!'/>
+                
+
+
+                    <img src="{{ asset('vendor/bladewind/images/empty-state.svg') }}" alt="" class="size-96">
+                </div>
+            </x-bladewind::card>
+        @endif
 
     </div>
 @endsection

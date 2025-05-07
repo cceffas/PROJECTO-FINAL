@@ -9,4 +9,9 @@ class Pagamento extends Model
     {
         return $this->belongsTo(Aluno::class);
     }
+    public function usuario(){
+
+
+        return $this->belongsTo(Usuario::class);
+    }
 }

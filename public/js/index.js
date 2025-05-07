@@ -45,15 +45,16 @@ function asideHide() {
 }
 
 /*colorir os botoens do aside bar caso forem pressinados*/
+const aside_buttons = document.querySelectorAll('#asidebar a');
 
-const aside_buttons = document.querySelectorAll('#asidebar a')
+// Pega a primeira pasta da URL atual
+const currentPath = window.location.pathname.split('/')[1];
 
+aside_buttons.forEach(function (element) {
+    const hrefPath = new URL(element.href).pathname.split('/')[1];
 
-aside_buttons.forEach(function (element, index) {
-
-
-    if (element.href == location) {
+    if (hrefPath === currentPath) {
         element.classList.add('text-white', 'bi-chevron-down');
     }
-
 });
+

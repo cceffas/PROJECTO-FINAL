@@ -39,7 +39,7 @@
 
 
 
-            @if(sizeof($alunos)>0)
+            @if(sizeof($alunos)>0 && $alunos!=null)
             @foreach ( $alunos as $aluno )
 
             <tr>

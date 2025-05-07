@@ -15,6 +15,8 @@ use function PHPUnit\Framework\isInt;
 
 class AlunoController extends Controller
 {
+
+
     public function index()
     {
 
@@ -32,20 +34,17 @@ class AlunoController extends Controller
     public function form()
     {
 
+
         $cursos = Curso::all();
-        $_cursos = [];
 
-        foreach ($cursos as $curso) {
 
-            array_push($_cursos, ['label' => $curso->nome, 'value' => $curso->id]);
-        }
-
-        return view('forms.criarAluno', ['cursos' => $_cursos]);
+        return view('forms.criarAluno', ['cursos' => $cursos]);
     }
 
     public function show($id)
     {
-        $id = base64_decode($id);
+
+        $cursos = Curso::all();
 
         if (isset($id)) {
 
@@ -53,40 +52,17 @@ class AlunoController extends Controller
 
             if ($aluno_selecionado != null) {
 
-                return dd($aluno_selecionado);
-
-                // return redirect('alunos/')->with(['sucess' => 'registro deletado com sucesso']);
+                return view('forms.editarAluno', ['cursos' => $cursos, 'aluno' => $aluno_selecionado]);
             } else {
 
-                // return redirect('alunos/')->with(['error' => 'nao foi possivel executar a operacao']);
-
-                return 'nenhum id valido selecionado';
+                return redirect()->back();
             }
         }
     }
 
     public function create(Request $dados)
     {
-        // Validação dos dados
-        $dataAtual = Carbon::now();
-        $dataMinima = $dataAtual->copy()->subYears(60); // máx 60 anos
-        $dataMaxima = $dataAtual->copy()->subYears(10); // mín 10 anos
 
-        $validacao = Validator::make($dados->all(), [
-            'nome'           => 'required|string|max:255',
-            'bi'             => 'required|string|size:14',
-            'tel' => 'min:0|max:9',
-            'curso'          => 'required',
-            'dt_nascimento'  => ['required', 'date', "after_or_equal:{$dataMinima->format('Y-m-d')}", "before_or_equal:{$dataMaxima->format('Y-m-d')}"],
-            'foto'           => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ], [
-            'dt_nascimento.after_or_equal' => 'O aluno deve ter no máximo 60 anos.',
-            'dt_nascimento.before_or_equal' => 'O aluno deve ter pelo menos 10 anos.',
-        ]);
-
-        if ($validacao->fails()) {
-            return redirect()->back()->with('error', 'Preencha todos os campos obrigatórios e obedeça os critérios de validação.');
-        }
 
         // Upload da imagem
         $arquivo = $dados->file('foto');
@@ -138,31 +114,8 @@ class AlunoController extends Controller
     {
 
 
-        // Validação dos dados
-        $dataAtual = Carbon::now();
-        $dataMinima = $dataAtual->copy()->subYears(60); // máx 60 anos
-        $dataMaxima = $dataAtual->copy()->subYears(10); // mín 10 anos
-
-        $validacao = Validator::make($dados->all(), [
-            'nome'           => 'required|string|max:255',
-            'bi'             => 'required|string|size:14',
-            "curso$dados->id"          => 'required|exists:cursos,id',
-            'dt_nascimento'  => ['required', 'date', "after_or_equal:{$dataMinima->format('Y-m-d')}", "before_or_equal:{$dataMaxima->format('Y-m-d')}"]
-            // 'foto'           => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ], [
-            'dt_nascimento.after_or_equal' => 'O aluno deve ter no máximo 60 anos.',
-            'dt_nascimento.before_or_equal' => 'O aluno deve ter pelo menos 10 anos.',
-        ]);
-
-        if ($validacao->fails()) {
-            return redirect('/alunos/')
-                ->withErrors($validacao)
-                ->withInput()
-                ->with('error', 'Preencha todos os campos obrigatórios e obedeça os critérios de validação.');
-        }
-
-
-        $curso = Curso::find($_POST["curso$dados->id"]);
+        // return $dados;
+        $curso = Curso::find($dados->curso);
         $atualizar_aluno = Aluno::find($dados->id);
 
         $atualizar_aluno->nome       = $dados->nome;
@@ -172,7 +125,7 @@ class AlunoController extends Controller
         $atualizar_aluno->bi         = $dados->bi;
         $atualizar_aluno->dt_nascimento = $dados->dt_nascimento;
 
-        if ($dados->file('foto')) {
+        if ($dados->file('foto') != $atualizar_aluno->foto) {
 
             $copy_file = $dados->file('foto');
             $nome_image = time() . '.' . $copy_file->guessClientExtension();
@@ -192,10 +145,10 @@ class AlunoController extends Controller
 
         if ($atualizar_aluno->update()) {
 
-            return redirect('/alunos/')->with('sucess', 'feito com sucesso!');
+            return redirect("/alunos/$atualizar_aluno->id")->with('sucess', 'feito com sucesso!');
         } else {
 
-            return redirect('/alunos/cadastro')->with('error', 'a operação falhou!');
+            return redirect("/alunos/$atualizar_aluno->id")->with('error', 'a operação falhou!');
         }
     }
 

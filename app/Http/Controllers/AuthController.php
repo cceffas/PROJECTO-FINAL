@@ -44,7 +44,7 @@ class AuthController extends Controller
                     $notificacao->save();
 
 
-                    return redirect('/')->with('error', 'acesso negado!');
+                    // return redirect('/')->with('error', 'acesso negado!');
                 
                 }
                 session(['user_id' => $usuario->id]);
