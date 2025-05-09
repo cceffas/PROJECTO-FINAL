@@ -1,79 +1,66 @@
 @extends('layouts.App')
-
-
-
-
-
 @section('content')
+    <div class="mt-20 space-y-10">
+        {{-- first --}}
+        <x-Title-App title="Instrutores" icon="bi bi-person" action="/instrutores/form" />
 
-<div class="mt-20">
-	
-</div>
+        {{-- end title section --}}
+        <x-bladewind::card>
+            <x-bladewind::table has_border=true searchable=true>
+                <x-slot name='header'>
+                    <tr class="text-center">
+                        <th>nº de processo</th>
+                        <th>Nome</th>
+                        <th>curso</th>
+                        <th>data emi</th>
+                        <th>Opções</th>
+                    </tr>
+                </x-slot>
+                {{-- end --}}
+                @isset($instrutores)
+                    @foreach ($instrutores as $instrutor)
+                        <tr>
+    
+                            <td>{{ $instrutor->id }}</td>
+                            <td>{{ $instrutor->nome }}</td>
+                            <td>{{ $instrutor->cursos()->get()[0]->nome }}</td>
+                            <td>{{ $instrutor->created_at }}</td>
+                            <td>
+                                <div class="flex gap-2">
+                                    <x-bladewind::button color="red" onclick="showModal('{{ $instrutor->id }}')"><i
+                                            class="bi-trash"></i></x-bladewind::button>
+                                    {{-- end --}}
+                                    <x-bladewind::button tag='a' color='green' href="/instrutores/{{ $instrutor->id }}"><i
+                                            class="bi-pencil"></i></x-bladewind::button>
+                                    {{-- end --}}
 
-<x-bladewind::card>
-    <div>
-        <form action="/instrutores/criar" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="flex flex-col justify-center items-center text-gray-600 mb-4">
-                <i class="bi-person-badge text-4xl"></i>
-                <h1>Registrar instrutor</h1>
-            </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {{-- end --}}
+                        <x-bladewind::modal name="{{ $instrutor->id }}" show_action_buttons=false>
+                            <div class="flex flex-col items-center justify-center">
+                                <form action="/instrutores/deletar/{{ $instrutor->id }}" method="get">
+                                    @csrf
+                                    <i
+                                        class="bi-trash text-4xl size-12 flex justify-center items-center bg-red-500/50 text-red-500 rounded-full mb-2"></i>
+                                    <h1>quer eliminar o instrutor</h1>
+                                    <h2>{{ $instrutor->nome }} ?</h2>
+                                    <div class="flex gap-4 mt-4">
+                                        <x-bladewind::button type="secondary"
+                                            onclick="hideModal('{{ $instrutor->id }}')">não</x-bladewind::button>
+                                        <x-bladewind::button can_submit=true>sim</x-bladewind::button>
+                                    </div>
+                                </form>
+                            </div>
+                        </x-bladewind::modal>
+                        {{-- end modal delete --}}
+                    @endforeach
+                @endisset
+                {{-- end --}}
 
-            {{-- Nome e Email --}}
-            <x-bladewind::input type="text" label="Nome" name="nome" required />
-            <x-bladewind::input type="email" label="Email" name="email" />
-
-            {{-- Telefone e BI --}}
-            <div class="flex gap-2">
-                <x-bladewind::input label="Telefone" name="tel" numeric=true />
-                <x-bladewind::input label="Número de BI" name="bi" required />
-            </div>
-
-            {{-- Sexo --}}
-            <x-bladewind::card>
-                <h1 class="capitalize">Sexo</h1>
-                <div class="flex flex-wrap p-2">
-                    <x-bladewind::radio label="Masculino" value="M" name="sexo" />
-                    <x-bladewind::radio label="Feminino" value="F" name="sexo" />
-                </div>
-            </x-bladewind::card>
-
-            {{-- Foto --}}
-            <x-bladewind::filepicker
-                name="foto"
-                label="Foto do Instrutor"
-                placeholder="Foto do instrutor"
-                acceptedFileTypes="image/*"
-                required
-            />
-
-            {{-- Documentos --}}
-            <x-bladewind::filepicker
-                name="documentos[]"
-                label="Documentos (PDF, imagens, etc)"
-                max_files="5"
-                acceptedFileTypes="application/pdf,image/*"
-                placeholder="Selecione os documentos"
-            />
-
-            {{-- Especialidades --}}
-            <x-bladewind::textarea
-                name="especialidade"
-                label="Especialidades"
-                placeholder="Separe por vírgula ou escreva livremente"
-                required
-            />
-
-            {{-- Botões --}}
-            <div class="flex justify-end gap-4 mt-2">
-                <x-bladewind::button type="secondary" onclick="hideModal('instrutor')">cancelar</x-bladewind::button>
-                <x-bladewind::button can_submit=true>confirmar</x-bladewind::button>
-            </div>
-        </form>
+                {{-- end modal form --}}
+            </x-bladewind::table>
+        </x-bladewind::card>
     </div>
-</x-bladewind::card>
-
-
-
-
 @endsection

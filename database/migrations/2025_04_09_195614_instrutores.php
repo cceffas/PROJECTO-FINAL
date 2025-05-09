@@ -18,9 +18,9 @@ return new class extends Migration
             $table->integer('tel')->nullable();
             $table->enum('sexo', ['M', 'F']);
             $table->text("foto");
-            $table->string("bi", 13);
-            $table->json("documentos")->nullable();
-            $table->json('especialidade');
+            $table->string("bi", 14);
+            $table->text("documentos")->nullable();
+            $table->text('especialidade');
             $table->timestamps();
         });
     }

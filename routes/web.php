@@ -172,6 +172,12 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
     Route::middleware([Admin::class])->prefix('/instrutores')->group(function () {
 
         Route::get('/',[InstrutorController::class,'index']);
+        Route::get('/form',[InstrutorController::class,'form']);
+        Route::get('/{id}',[InstrutorController::class,'show']);
+        Route::post('/criar', [InstrutorController::class,'create']);
+        Route::post('/atualizar', [InstrutorController::class,'update']);
+        Route::get('/deletar/{id}', [InstrutorController::class,'delete']);
+
     });
     Route::middleware([Admin::class])->prefix('/institutos')->group(function () {
 

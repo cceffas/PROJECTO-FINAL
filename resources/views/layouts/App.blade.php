@@ -9,10 +9,9 @@
     $user = Usuario::find(session()->get('user_id'));
     $notificacoes = $user->notificacoes()->where('estatus', '=', 'ON')->get();
 
-    // return dd($notificacoes->count());
 
 @endphp
-{{-- end --}}
+
 
 <head>
     <meta charset="utf-8">
@@ -26,14 +25,11 @@
     <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
-    {{-- my css link --}}
     {{-- my js script --}}
     <script src="{{ asset('js/index.js') }}" defer></script>
     <script src="{{ asset('js/validate.js') }}" defer></script>
 
-    {{-- <script src="./js/index.js" defer></script> --}}
-    {{-- <script src="./js/components.js" defer></script> --}}
-    <script src="./js/validate.js"></script>
+    
     @livewireStyles()
 </head>
 <script src="//unpkg.com/alpinejs" defer></script>
@@ -42,7 +38,7 @@
 <body class="relative flex w-full h-screen overflow-hidden  bg-slate-800">
     {{-- first --}}
     <header id="header"
-        class="absolute top-0 flex items-center justify-center w-full h-20 z-40 backdrop-blur shadow-lg bg-blue-800/20">
+        class="absolute top-0 flex items-center justify-center w-screen h-20 z-40 backdrop-blur shadow-lg bg-slate-800">
 
 
         <div class='ml-10 text-blue-400'>
@@ -79,7 +75,7 @@
 
         </div>
     </header>
-    <!-- /header -->
+  
     <x-asidebar />
     {{-- end --}}
     <main class='relative flex items-center justify-center grow'>
@@ -118,8 +114,6 @@
     </main>
     @livewireScripts()
 </body>
-
-
 
 
 </html>
