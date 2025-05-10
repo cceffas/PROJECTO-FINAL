@@ -1,10 +1,12 @@
 @extends('layouts.main')
 @section('content')
-    <div class="relative flex w-full items-center justify-center h-full bg-gradient-to-br from-blue-100 to-slate-900">
+    <div class="relative flex w-full items-center justify-center h-full  bg-slate-900">
         {{-- end --}}
-        <div class='absolute left-0 top-0 w-full h-full opacity-20 z-0' id='particles-js'></div>
+        <div class="absolute left-0 top-0 w-full h-full opacity-5 z-0" id="particles-js"></div>
 
-        <form class="flex flex-col gap-4 min-h-96 min-w-96 z-10 bg-white/20 backdrop-blur p-8 rounded-md " method="post"
+
+
+        <form class="flex flex-col gap-4 min-h-96 min-w-96 z-10 bg-white/20 backdrop-blur p-8 rounded-md border border-white/30" method="post"
             action='/entrar'>
             @csrf
             <!-- end -->

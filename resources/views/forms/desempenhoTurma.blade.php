@@ -7,40 +7,55 @@
         <x-Title-app title='desempenho > turma > {{ $turma->nome }}' action='/desempenho' text_action='voltar'
             type='secondary' />
 
+
         <x-bladewind::card>
-            <x-bladewind::table>
+            <form action="/desempenho/criar" method="POST">
+                @csrf
+                <x-bladewind::table>
 
-                <x-slot name='header'>
+                    <x-slot name='header'>
 
-                    <tr>
-                        <th>Nº de processo</th>
-                        <th>Nome</th>
-                        <th>Nota 1</th>
-                        <th>Nota 2</th>
-                        <th>Nota 3</th>
-                        <th>Media</th>
-                        <th>acçoes</th>
+                        <tr>
+                            <th>Nº de processo</th>
+                            <th>Nome</th>
+                            <th>Nota 1</th>
+                            <th>Nota 2</th>
+                            <th>Nota 3</th>
+                            <th>Media</th>
+                            <th><x-bladewind::button can_submit='true'>salvar</x-bladewind::button></th>
 
 
-                    </tr>
-                </x-slot>
 
-                @foreach ($turma->alunos()->get() as $aluno)
-                    <tr>
-                        <td>{{ $aluno->id }}</td>
-                        <td>{{ $aluno->nome }}</td>
+                        </tr>
+                    </x-slot>
 
-                        @foreach ($aluno->notas()->get() as $nota)
-                            <td><span class="size-4 hover:bg-blue-500 text-blue-500 rounded p-2" contenteditable="true">{{ $nota->valor }}</span></td>
-                        @endforeach
+                    @foreach ($turma->alunos()->get() as $aluno)
+                        <tr>
+                            <td>{{ $aluno->id }}</td>
+                            <td>{{ $aluno->nome }}</td>
 
-                        <td>{{ $nota->sum('valor') / $aluno->notas()->count() }}</td>
+                            @foreach ($aluno->notas()->get() as $nota)
+                                <td><input
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="20"
+                                    name="notas[{{ $nota->id }}][{{ $nota->valor }}]"
+                                    value="{{ $nota->valor }}"
+                                    style="width: 50px; font-size: 13px; border:none;"
+                                    class="rounded text-blue-500 cursor-pointer"
+                                />
+                                </td>
+                            @endforeach
 
-                        <td><x-bladewind::button>salvar</x-bladewind::button></td>
-                    </tr>
-                @endforeach
+                            <td>{{ number_format($nota->sum('valor') / $aluno->notas()->count() ,1)}}</td>
+                            <td></td>
 
-            </x-bladewind::table>
+                        </tr>
+                    @endforeach
+
+                </x-bladewind::table>
+            </form>
 
 
 

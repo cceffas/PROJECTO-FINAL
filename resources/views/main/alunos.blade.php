@@ -12,6 +12,7 @@
                         <th>nº de processo</th>
                         <th>Nome</th>
                         <th>curso</th>
+                        <th>estatus</th>
                         <th>data emi</th>
                         <th>Opções</th>
                     </tr>
@@ -20,19 +21,19 @@
                 @isset($alunos)
                     @foreach ($alunos as $aluno)
                         <tr>
-                            {{-- <td>
-                    <x-bladewind::avatar image='uploads/{{ $aluno->foto }}' />
-                </td> --}}
+      
                             <td>{{ $aluno->id }}</td>
                             <td>{{ $aluno->nome }}</td>
                             <td>{{ $aluno->cursos()->get()[0]->nome }}</td>
+                            <td><x-bladewind::tag label='{{ $aluno->estatus }}'/></td>
+
                             <td>{{ $aluno->created_at }}</td>
                             <td>
                                 <div class="flex gap-2">
-                                    <x-bladewind::button color="red" onclick="showModal('{{ $aluno->id }}')"><i
+                                    <x-bladewind::button color="slate" onclick="showModal('{{ $aluno->id }}')"><i
                                             class="bi-trash"></i></x-bladewind::button>
                                     {{-- end --}}
-                                    <x-bladewind::button tag='a' color='green' href="/alunos/{{ $aluno->id }}"><i
+                                    <x-bladewind::button tag='a'  href="/alunos/{{ $aluno->id }}"><i
                                             class="bi-pencil"></i></x-bladewind::button>
                                     {{-- end --}}
 

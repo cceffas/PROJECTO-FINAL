@@ -129,8 +129,9 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
 
         Route::get('/', [desempenhoController::class, 'index']);
         Route::get('/{id}', [desempenhoController::class, 'show']);
+        Route::post('/criar',[desempenhoController::class,'create']);
 
-        Route::get('/{curso_id}/{turma_id}', [NotaController::class, 'show']);
+       
     });
 
 
