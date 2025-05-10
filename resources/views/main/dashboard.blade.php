@@ -2,12 +2,6 @@
 @section('content')
     <div class=" mt-20 space-y-10">
 
-        <div>
-            <x-bladewind::card>
-                <x-bladewind::chart :data="$dados" title='Inscirções' />
-            </x-bladewind::card>
-        </div>
-        {{-- grafico --}}
         <div class="flex flex-row flex-wrap w-full  gap-2">
             <x-bladewind::card has_shadow="true" class="grow">
                 <div class="flex flex-col items-center justify-center p-2">
@@ -54,6 +48,12 @@
             <!-- end -->
         </div>
         {{-- end header --}}
+        <div>
+            <x-bladewind::card>
+                <x-bladewind::chart :data="$dados" title='Inscirções' />
+            </x-bladewind::card>
+        </div>
+        {{-- grafico --}}
 
     </div>
 @endsection

@@ -100,7 +100,7 @@
                                     {{-- gerar recibo --}}
                                     <div class="flex items-center justify-end mt-4">
 
-                                        <form action="/pagamentos/{{ $pagamento->id }}" action="get">
+                                        <form action="/pagamentos/{{ $pagamento->id }}" action="get" target="_blank">
                                             <x-bladewind::button can_submit='true'>gerar fatura</x-bladewind::button>
                                         </form>
                                     </div>

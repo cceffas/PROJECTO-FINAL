@@ -15,6 +15,7 @@ use App\Http\Controllers\NotaController;
 
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PlanoEstagioController;
+use App\Http\Controllers\desempenhoController;
 // controllers end
 use App\Http\Middleware\UsuarioNaoLogado;
 use App\Http\Middleware\UsuarioLogado;
@@ -126,7 +127,9 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
     });
     Route::middleware([Pedagogia::class])->prefix('/desempenho')->group(function () {
 
-        Route::get('/', [NotaController::class, 'index']);
+        Route::get('/', [desempenhoController::class, 'index']);
+        Route::get('/{id}', [desempenhoController::class, 'show']);
+
         Route::get('/{curso_id}/{turma_id}', [NotaController::class, 'show']);
     });
 

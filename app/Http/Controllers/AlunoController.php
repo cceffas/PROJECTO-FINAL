@@ -16,7 +16,35 @@ use function PHPUnit\Framework\isInt;
 class AlunoController extends Controller
 {
 
+    private function uploadFicheiro($ficheiro, String $dir = 'uploads'): String
+    {
 
+        $arquivo = $ficheiro;
+        $nome_ficheiro = time() . '.' . $arquivo->getClientOriginalExtension();
+        $arquivo->move(public_path("$dir"), $nome_ficheiro);
+
+        return $nome_ficheiro;
+    }
+    private function preencherAluno(Aluno $aluno, Request $dados): Aluno
+    {
+
+
+
+        if ($dados->all() != null) {
+
+            $aluno->nome          = $dados->nome;
+            $aluno->email         = $dados->email ?? '';
+            $aluno->tel           = $dados->tel;
+            $aluno->sexo          = $dados->sexo;
+            $aluno->bi            = $dados->bi;
+            $aluno->foto          = $this->uploadFicheiro($dados->file('foto'));
+            $aluno->dt_nascimento = $dados->dt_nascimento;
+        }
+
+
+        return $aluno;
+    }
+    #--------------------------------------------------------------
     public function index()
     {
 
@@ -33,14 +61,9 @@ class AlunoController extends Controller
     }
     public function form()
     {
-
-
         $cursos = Curso::all();
-
-
         return view('forms.criarAluno', ['cursos' => $cursos]);
     }
-
     public function show($id)
     {
 
@@ -59,40 +82,24 @@ class AlunoController extends Controller
             }
         }
     }
-
     public function create(Request $dados)
     {
 
 
-        // Upload da imagem
-        $arquivo = $dados->file('foto');
-        $nomeImagem = time() . '.' . $arquivo->getClientOriginalExtension();
-        $arquivo->move(public_path('uploads'), $nomeImagem);
+        $aluno = $this->preencherAluno(new Aluno(), $dados);
 
-        // Criação do aluno
-        $novoAluno = new Aluno();
-        $novoAluno->nome          = $dados->nome;
-        $novoAluno->email         = $dados->email;
-        $novoAluno->tel           = $dados->tel;
-        $novoAluno->sexo          = $dados->sexo;
-        $novoAluno->bi            = $dados->bi;
-        $novoAluno->foto          = $nomeImagem;
-        $novoAluno->dt_nascimento = $dados->dt_nascimento;
-        $salvo = $novoAluno->save();
+        if ($aluno->save()) {
 
-        // Associação com curso
-        if ($salvo) {
-
-            for ($n = 0; $n < 6; $n++) {
+            for ($n = 0; $n < 3; $n++) {
 
                 $notas = new Nota();
                 $notas->valor = 0;
-                $notas->aluno()->associate($novoAluno);
+                $notas->aluno()->associate($aluno);
                 $notas->save();
             }
 
             $curso = Curso::find($dados->curso);
-            $novoAluno->cursos()->attach($curso);
+            $aluno->cursos()->attach($curso);
 
 
             return redirect('/alunos/')->with('sucess', 'Aluno cadastrado com sucesso!');
@@ -100,81 +107,45 @@ class AlunoController extends Controller
             return redirect('/alunos/cadastro')->with('error', 'A operação falhou!');
         }
     }
-
-    public function doc_pdf($id)
-    {
-
-        $aluno = Aluno::find($id);
-        $pdf = Pdf::loadView('pdf.ficha', ['aluno' => $aluno]);
-
-        return $pdf->stream();
-    }
-
     public function update(Request $dados)
     {
 
-
-        // return $dados;
         $curso = Curso::find($dados->curso);
-        $atualizar_aluno = Aluno::find($dados->id);
+        $aluno = $this->preencherAluno(Aluno::find($dados->id), $dados);
 
-        $atualizar_aluno->nome       = $dados->nome;
-        $atualizar_aluno->email      = $dados->email;
-        $atualizar_aluno->tel        = $dados->tel;
-        $atualizar_aluno->sexo       = $dados->sexo;
-        $atualizar_aluno->bi         = $dados->bi;
-        $atualizar_aluno->dt_nascimento = $dados->dt_nascimento;
 
-        if ($dados->file('foto') != $atualizar_aluno->foto) {
+        if ($aluno->cursos()->get()[0]->id != $curso->id) {
 
-            $copy_file = $dados->file('foto');
-            $nome_image = time() . '.' . $copy_file->guessClientExtension();
-            move_uploaded_file($copy_file, public_path('/uploads/' . $nome_image));
-            $atualizar_aluno->foto       = $nome_image;
+            $curso_antigo = $aluno->cursos()->get()[0];
+            $aluno->cursos()->detach($curso_antigo);
+            $aluno->cursos()->attach($curso);
         }
 
-        if ($atualizar_aluno->cursos()->get()[0]->id != $curso->id) {
+        if ($aluno->update()) {
 
-
-
-            $curso_antigo = $atualizar_aluno->cursos()->get()[0];
-            $atualizar_aluno->cursos()->detach($curso_antigo);
-            $atualizar_aluno->cursos()->attach($curso);
-        }
-
-
-        if ($atualizar_aluno->update()) {
-
-            return redirect("/alunos/$atualizar_aluno->id")->with('sucess', 'feito com sucesso!');
+            return redirect("/alunos/$aluno->id")->with('sucess', 'feito com sucesso!');
         } else {
 
-            return redirect("/alunos/$atualizar_aluno->id")->with('error', 'a operação falhou!');
+            return redirect("/alunos/$aluno->id")->with('error', 'a operação falhou!');
         }
     }
-
     public function delete($id)
     {
 
-        if (isset($id)) {
+        if ($id != null) {
 
             $aluno_selecionado = Aluno::find($id);
-
-            $dados = json_encode($aluno_selecionado);
-
-            $file = fopen("data/$aluno_selecionado->nome.json ", 'w');
-
-            fwrite($file, $dados);
-            fclose($file);
 
             if ($aluno_selecionado != null) {
 
                 $aluno_selecionado->delete();
 
-                return redirect('alunos/')->with('sucess', 'registro deletado comsucesso');
+                return redirect()->back()->with('sucess', 'registro deletado com sucesso');
             } else {
 
-                return redirect('alunos/')->with('error', 'nao foipossivelexecutaraoperacao');
+                return redirect()->back()->with('error', 'nao foi possivel executarao peracao');
             }
         }
+        return redirect()->back();
     }
 }
