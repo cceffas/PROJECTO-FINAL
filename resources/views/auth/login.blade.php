@@ -6,8 +6,9 @@
 
 
 
-        <form class="flex flex-col gap-4 min-h-96 min-w-96 z-10 bg-white/20 backdrop-blur p-8 rounded-md border border-white/30" method="post"
-            action='/entrar'>
+        <form
+            class="flex flex-col gap-4 min-h-96 min-w-96 z-10 bg-white/20 backdrop-blur p-8 rounded-md border border-white/30"
+            method="post" action='/entrar'>
             @csrf
             <!-- end -->
             <div class="flex flex-col items-center gap-2 text-white">

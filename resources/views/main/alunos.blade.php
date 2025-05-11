@@ -3,7 +3,6 @@
     <div class="mt-20 space-y-10">
         {{-- first --}}
         <x-Title-App title="alunos" icon="bi bi-person" action="/alunos/form" />
-
         {{-- end title section --}}
         <x-bladewind::card>
             <x-bladewind::table has_border=true searchable=true>
@@ -21,11 +20,11 @@
                 @isset($alunos)
                     @foreach ($alunos as $aluno)
                         <tr>
-      
+
                             <td>{{ $aluno->id }}</td>
                             <td>{{ $aluno->nome }}</td>
                             <td>{{ $aluno->cursos()->get()[0]->nome }}</td>
-                            <td><x-bladewind::tag label='{{ $aluno->estatus }}'/></td>
+                            <td><x-bladewind::tag label='{{ $aluno->estatus }}' /></td>
 
                             <td>{{ $aluno->created_at }}</td>
                             <td>
@@ -33,7 +32,7 @@
                                     <x-bladewind::button color="slate" onclick="showModal('{{ $aluno->id }}')"><i
                                             class="bi-trash"></i></x-bladewind::button>
                                     {{-- end --}}
-                                    <x-bladewind::button tag='a'  href="/alunos/{{ $aluno->id }}"><i
+                                    <x-bladewind::button tag='a' href="/alunos/{{ $aluno->id }}"><i
                                             class="bi-pencil"></i></x-bladewind::button>
                                     {{-- end --}}
 
@@ -65,5 +64,12 @@
                 {{-- end modal form --}}
             </x-bladewind::table>
         </x-bladewind::card>
+        {{-- end --}}
+
+
+        @if (sizeof($alunos) <= 0)
+            <x-Nodata text='sem alunos' />
+        @endif
+        {{-- end --}}
     </div>
 @endsection
