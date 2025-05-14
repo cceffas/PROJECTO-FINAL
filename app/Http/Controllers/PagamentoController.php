@@ -72,8 +72,6 @@ class PagamentoController extends Controller
                 $arquivo->move(public_path('uploads'), $nomeArquivo);
                 
 
-
-
                 $novo_pagamento = new Pagamento();
                 $novo_pagamento->valor = $dados->valor;
                 $novo_pagamento->m_pagamento = $dados->m_pagamento;
@@ -82,7 +80,8 @@ class PagamentoController extends Controller
                 $novo_pagamento->usuario()->associate($usuario);
                 $novo_pagamento->aluno()->associate($aluno);
                 $novo_pagamento->comprovativo = $nomeArquivo;
-
+                $aluno->estatus='ON';
+                $aluno->update();
                 $novo_pagamento->save();
                 return redirect()->back()->with('sucess', 'pagamento registrado com sucesso');
             } else {

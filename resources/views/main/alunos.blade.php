@@ -24,7 +24,9 @@
                             <td>{{ $aluno->id }}</td>
                             <td>{{ $aluno->nome }}</td>
                             <td>{{ $aluno->cursos()->get()[0]->nome }}</td>
-                            <td><x-bladewind::tag label='{{ $aluno->estatus }}' /></td>
+
+                            
+                            <td><x-bladewind::tag label='{{ $aluno->estatus }}' color="{{$aluno->estatus=='ON' ? 'green' : 'red'}}" /></td>
 
                             <td>{{ $aluno->created_at }}</td>
                             <td>

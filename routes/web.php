@@ -24,6 +24,8 @@ use App\Http\Middleware\Pedagogia;
 use App\Http\Middleware\Secretaria;
 use App\Http\Middleware\NoCacheHeaders;
 use App\Models\Notificacao;
+use App\Models\Aluno;
+
 use App\Models\PlanoEstagio;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
 use Nette\Utils\Strings;
@@ -50,32 +52,33 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
 
         Route::get('/notifications', [NotificacaoController::class, 'index']);
     });
+    Route::middleware([UsuarioLogado::class])->prefix('/instrutores')->group(function () {
+
+        Route::get('/', [InstrutorController::class, 'index']);
+        Route::get('/form', [InstrutorController::class, 'form']);
+        Route::get('/{id}', [InstrutorController::class, 'show']);
+        Route::post('/criar', [InstrutorController::class, 'create']);
+        Route::post('/atualizar', [InstrutorController::class, 'update']);
+        Route::get('/deletar/{id}', [InstrutorController::class, 'delete']);
+    });
     Route::post('/entrar', [AuthController::class, 'entrar'])->middleware(UsuarioNaoLogado::class);
 
 
-    ##nivel de acesso Secretaria
 
-    Route::middleware(Secretaria::class)->get('/panel', function () {
+    Route::middleware(UsuarioLogado::class)->get('/panel', function () {
 
 
         $dados = [
             "labels" => ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             "datasets" => [
                 [
-                    'type' => 'bar',
-                    'label' => 'Inscirções',
-                    'data' => [10, 20, 30, 25, 15],
+                    'type' => '',
+                    'label' => 'Alunos',
+                    'data' => [Aluno::count()],
                     'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
                     'borderColor' => 'rgb(75, 192, 192)',
-                ],
-                [
-                    'type' => 'line',
-                    'label' => 'desistentes',
-                    'data' => [12, 18, 28, 22, 17],
-                    'borderColor' => '#FF6384',
-                    'borderWidth' => 2,
-                    'fill' => false,
                 ]
+            
             ]
         ];
 
@@ -87,6 +90,7 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
 
         return view('main.dashboard', ['turmas' => $turmas, 'cursos' => $cursos, 'alunos' => $alunos, 'instrutores' => $instrutores, 'dados' => $dados]);
     });
+    ##nivel de acesso Secretaria
     Route::middleware([Secretaria::class])->prefix("/alunos")->group(function () {
 
         Route::get("/", [AlunoController::class, 'index']);
@@ -129,9 +133,7 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
 
         Route::get('/', [desempenhoController::class, 'index']);
         Route::get('/{id}', [desempenhoController::class, 'show']);
-        Route::post('/criar',[desempenhoController::class,'create']);
-
-       
+        Route::post('/criar', [desempenhoController::class, 'create']);
     });
 
 
@@ -172,16 +174,6 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
         Route::post('/criar', [PlanoEstagioController::class, 'create']);
         Route::post('/atualizar', [PlanoEstagioController::class, 'update']);
         Route::post('/deletar', [PlanoEstagioController::class, 'delete']);
-    });
-    Route::middleware([Admin::class])->prefix('/instrutores')->group(function () {
-
-        Route::get('/',[InstrutorController::class,'index']);
-        Route::get('/form',[InstrutorController::class,'form']);
-        Route::get('/{id}',[InstrutorController::class,'show']);
-        Route::post('/criar', [InstrutorController::class,'create']);
-        Route::post('/atualizar', [InstrutorController::class,'update']);
-        Route::get('/deletar/{id}', [InstrutorController::class,'delete']);
-
     });
     Route::middleware([Admin::class])->prefix('/institutos')->group(function () {
 

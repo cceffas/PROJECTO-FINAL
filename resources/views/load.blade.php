@@ -10,6 +10,5 @@
     <x-bladewind::spinner /> --}}
     <x-bladewind::progress-bar percentage="60" shade="dark" color="red" striped="true" />
 
-
 </div>
 @endsection

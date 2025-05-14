@@ -87,6 +87,7 @@ class AlunoController extends Controller
 
 
         $aluno = $this->preencherAluno(new Aluno(), $dados);
+        $aluno->estatus = 'OFF';
 
         if ($aluno->save()) {
 
