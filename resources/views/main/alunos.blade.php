@@ -28,7 +28,7 @@
                             
                             <td><x-bladewind::tag label='{{ $aluno->estatus }}' color="{{$aluno->estatus=='ON' ? 'green' : 'red'}}" /></td>
 
-                            <td>{{ $aluno->created_at }}</td>
+                            <td>{{ $aluno->created_at->format('d/m/y') }}</td>
                             <td>
                                 <div class="flex gap-2">
                                     <x-bladewind::button color="slate" onclick="showModal('{{ $aluno->id }}')"><i
