@@ -91,7 +91,6 @@
 
         <!-- Cabeçalho -->
         <div class="header">
-            <img src="./logomark.jpg" alt="logo escolar">
             <h1>Centro de Formação Profissional MM-INDUSTEC</h1>
             <p>NIF: 123456789 | Luanda – Angola</p>
             <p>Email: mmindustec@escola.com | Tel: +244 999 999 999</p>
