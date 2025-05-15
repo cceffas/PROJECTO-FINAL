@@ -1,59 +1,48 @@
 @extends('layouts.App')
+
 @section('content')
-    <div class=" mt-20 space-y-10">
+<div class="mt-20 space-y-10">
 
-        <div class="flex flex-row flex-wrap w-full  gap-2">
-            <x-bladewind::card has_shadow="true" class="grow">
-                <div class="flex flex-col items-center justify-center p-2">
-                    <x-bladewind::statistic number="{{ $alunos }}" label="total alunos">
-                        <x-slot name="icon">
-                            <i class="bi-people-fill text-2xl text-gray-500"></i>
-                        </x-slot>
-                    </x-bladewind::statistic>
-                </div>
-                {{-- end --}}
-                <!-- end -->
-            </x-bladewind::card>
-            <!-- end -->
-            <x-bladewind::card has_shadow="true" class="grow">
-                <div class="flex flex-col items-center justify-center p-2">
-                    <x-bladewind::statistic number="{{ $cursos }}" label="total cursos">
-                        <x-slot name="icon">
-                            <i class="bi-collection-fill text-2xl text-gray-500"></i>
-                        </x-slot>
-                    </x-bladewind::statistic>
-                </div>
-                <!-- end -->
-            </x-bladewind::card>
-            <!-- end -->
-            <x-bladewind::card has_shadow="true" class="grow">
-                <div class="flex flex-col items-center justify-center p-2">
-                    <x-bladewind::statistic number="{{ $turmas }}" label="total Turmas">
-                        <x-slot name="icon">
-                            <i class="bi-door-closed-fill text-2xl text-gray-500"></i>
-                        </x-slot>
-                    </x-bladewind::statistic>
-                </div>
-            </x-bladewind::card>
-            <!-- end -->
-            <x-bladewind::card has_shadow="true" class="grow">
-                <div class="flex flex-col items-center justify-center p-2">
-                    <x-bladewind::statistic number="{{ $instrutores }}" label="total instrutores">
-                        <x-slot name="icon">
-                            <i class="bi-people-fill text-2xl text-gray-500"></i>
-                        </x-slot>
-                    </x-bladewind::statistic>
-                </div>
-            </x-bladewind::card>
-            <!-- end -->
-        </div>
-        {{-- end header --}}
-        <div>
-            <x-bladewind::card>
-                <x-bladewind::chart :data="$dados" title='Inscirções' />
-            </x-bladewind::card>
-        </div>
-        {{-- grafico --}}
+    {{-- Estatísticas principais --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <x-bladewind::card has_shadow="true" class="flex flex-col items-center justify-center p-6">
+            <x-bladewind::statistic number="{{ $alunos }}" label="Total Alunos">
+                <x-slot name="icon">
+                    <i class="bi bi-people-fill text-3xl text-gray-600"></i>
+                </x-slot>
+            </x-bladewind::statistic>
+        </x-bladewind::card>
 
+        <x-bladewind::card has_shadow="true" class="flex flex-col items-center justify-center p-6">
+            <x-bladewind::statistic number="{{ $cursos }}" label="Total Cursos">
+                <x-slot name="icon">
+                    <i class="bi bi-collection-fill text-3xl text-gray-600"></i>
+                </x-slot>
+            </x-bladewind::statistic>
+        </x-bladewind::card>
+
+        <x-bladewind::card has_shadow="true" class="flex flex-col items-center justify-center p-6">
+            <x-bladewind::statistic number="{{ $turmas }}" label="Total Turmas">
+                <x-slot name="icon">
+                    <i class="bi bi-door-closed-fill text-3xl text-gray-600"></i>
+                </x-slot>
+            </x-bladewind::statistic>
+        </x-bladewind::card>
+
+        <x-bladewind::card has_shadow="true" class="flex flex-col items-center justify-center p-6">
+            <x-bladewind::statistic number="{{ $instrutores }}" label="Total Instrutores">
+                <x-slot name="icon">
+                    <i class="bi bi-person-badge-fill text-3xl text-gray-600"></i>
+                </x-slot>
+            </x-bladewind::statistic>
+        </x-bladewind::card>
     </div>
+
+    {{-- Gráfico de Inscrições --}}
+    <x-bladewind::card class="p-6" has_shadow="true">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Inscrições no Ano</h2>
+        <x-bladewind::chart :data="$dados" />
+    </x-bladewind::card>
+
+</div>
 @endsection

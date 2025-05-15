@@ -12,7 +12,7 @@ use App\Http\Controllers\TurmaController;
 use App\Http\Controllers\InstrutorController;
 use App\Http\Controllers\EstagiariosController;
 use App\Http\Controllers\InstitutoController;
-use App\Http\Controllers\NotaController;
+
 
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PlanoEstagioController;
@@ -27,9 +27,7 @@ use App\Http\Middleware\NoCacheHeaders;
 use App\Models\Notificacao;
 use App\Models\Aluno;
 
-use App\Models\PlanoEstagio;
-use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
-use Nette\Utils\Strings;
+
 
 //end midlewares
 

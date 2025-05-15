@@ -53,8 +53,6 @@ const currentPath = window.location.pathname.split('/')[1];
 aside_buttons.forEach(function (element) {
     const hrefPath = new URL(element.href).pathname.split('/')[1];
 
-    if (hrefPath === currentPath) {
-        element.classList.add('text-white', 'bi-chevron-down');
-    }
+
 });
 
