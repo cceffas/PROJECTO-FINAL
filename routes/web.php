@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 // end init
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CertificadosController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\UsuarioController;
@@ -127,7 +128,8 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
     });
     Route::middleware([Pedagogia::class])->prefix("/certificados")->group(function () {
 
-        Route::view('/', 'main.certificados');
+        Route::get('/',[CertificadosController::class,'index']);
+        Route::get('/{id}', [CertificadosController::class,'show']);
     });
     Route::middleware([Pedagogia::class])->prefix('/desempenho')->group(function () {
 
