@@ -26,6 +26,9 @@ class AuthController extends Controller
         }
 
         $usuario = Usuario::where('nome', '=', $dados->nome)->first();
+
+
+        // return $usuario;
         $message_erro = 'Credencias Invalidos!';
 
 
@@ -39,17 +42,17 @@ class AuthController extends Controller
 
                     $notificacao = new Notificacao();
                     $notificacao->tipo = 'alerta';
-                    $notificacao->descricao='alguém tentou logar com as suas credencias';
+                    $notificacao->descricao = 'alguém tentou logar com as suas credencias';
                     $notificacao->usuario()->associate($usuario);
                     $notificacao->save();
 
 
                     // return redirect('/')->with('error', 'acesso negado!');
-                
+
                 }
                 session(['user_id' => $usuario->id]);
                 session(['acesso' => $usuario->acesso]);
-                Cookie('user', $usuario->id,24*60*60);
+                Cookie('user', $usuario->id, 24 * 60 * 60);
 
                 $usuario->estatus = 'ON';
                 $usuario->update();

@@ -29,13 +29,6 @@ use App\Models\Aluno;
 
 
 
-//end midlewares
-
-
-
-
-Route::get('/teste', function () {});
-
 Route::middleware(NoCacheHeaders::class)->group(function () {
 
     Route::get('/', [AuthController::class, 'index'])->middleware(UsuarioNaoLogado::class);
@@ -142,6 +135,8 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
     Route::middleware([Admin::class])->prefix('/usuarios')->group(function () {
 
         Route::get('/', [UsuarioController::class, 'index']);
+        Route::get('/form', [UsuarioController::class,'form']);
+        Route::get('/editar/{id}', [UsuarioController::class,'edit']);
         Route::post('/criar', [UsuarioController::class, 'create']);
         Route::post('/atualizar', [UsuarioController::class, 'update']);
         Route::get('/deletar/{id}', [UsuarioController::class, 'delete']);

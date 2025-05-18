@@ -13,12 +13,28 @@ class UsuarioController extends Controller
         $acessos = ['admin', 'secretaria', 'pedagogia'];
 
         $usuarios = Usuario::all();
-        return view('forms.formUsuario', ['usuarios' => $usuarios, 'acessos' => $acessos]);
+        return view('main.usuarios', ['usuarios' => $usuarios, 'acessos' => $acessos]);
+    }
+    public function form()
+    {
+
+        return view('forms.criarUsuario');
+    }
+    public function edit($id)
+    {
+
+        $usuario = Usuario::find($id);
+        if ($usuario) {
+
+            return view('forms.editarUsuario', ['usuario' => $usuario]);
+        }
+
+        return redirect()->back();
     }
     public function create(Request $dados)
     {
 
-        $validar = validator::make($dados->all(), ['nome' => 'required|string|min:4', 'senha' => 'required|min:6', 'acesso' => 'required']);
+        $validar = validator::make($dados->all(), ['nome' => 'required', 'senha' => 'required|min:6', 'acesso' => 'required']);
 
         if ($validar->fails()) {
 
@@ -26,7 +42,12 @@ class UsuarioController extends Controller
         }
 
 
-        $novo_usuario = Usuario::create(['nome' => "$dados->nome", 'senha' => bcrypt($dados->senha), 'acesso' => $dados->acesso]);
+        try {
+            $novo_usuario = Usuario::create(['nome' => "$dados->nome", 'senha' => bcrypt($dados->senha), 'acesso' => $dados->acesso]);
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', 'o nome do usuario deve ser unico');
+        }
 
         return redirect('/usuarios/')->with('sucess', 'o novo usuario foi criado com sucesso! ');
     }
@@ -34,26 +55,41 @@ class UsuarioController extends Controller
     public function update(Request $dados)
     {
 
-        $validar = validator::make($dados->all(), ['id' => 'required']);
+
+
+        $validar = validator::make(
+            $dados->all(),
+            [
+                'id' => 'required',
+                'nome' => 'required',
+                'senha' => 'required',
+                'acesso' => 'required'
+            ]
+        );
+
+
 
         if ($validar->fails()) {
-            return redirect()->back()->with('error', 'falhou!');
+            return redirect()->back()->with('error', 'preencha todos os campos obrigatorios!');
         }
+
         $usuario = Usuario::find($dados->id);
 
         if (password_verify($dados->senha, $usuario->senha)) {
 
 
-            $usuario->update([
-                'nome' => $dados->nome,
-                'acesso' => $dados->acesso
-            ]);
-
-            $usuario->update();
-
-            return redirect('/usuarios/')->with('sucess', 'usuario atualizado com sucesso! ');
+            try {
+                $usuario->nome = $dados->nome;
+                $usuario->acesso = $dados->acesso;
+                $usuario->senha = $dados->senhaNova ? bcrypt($dados->senhaNova) : bcrypt($dados->senha);
+                $usuario->update();
+                return redirect()->back()->with('sucess', 'usuario atualizado com sucesso! ');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'o nome do usuario deve ser  unico!');
+            }
         } else {
-            return redirect('/usuarios/')->with('error', 'não foi possivel atualizar o usuario! senha incorrecta');
+
+            return redirect()->back()->with('error', 'senha errada!');
         }
     }
     public function delete($id)

@@ -39,6 +39,9 @@ async function changeScreen(url, id_element) {
 
 
 
+
+
+
 function asideHide() {
 
     document.getElementById('asidebar').classList.toggle('hidden')
@@ -46,12 +49,23 @@ function asideHide() {
 
 /*colorir os botoens do aside bar caso forem pressinados*/
 const aside_buttons = document.querySelectorAll('#asidebar a');
+const progressBar=document.querySelector('#progress')
+
+
+
 
 // Pega a primeira pasta da URL atual
 const currentPath = window.location.pathname.split('/')[1];
 
 aside_buttons.forEach(function (element) {
     const hrefPath = new URL(element.href).pathname.split('/')[1];
+
+
+    element.addEventListener('click', function () {
+
+
+        progressBar.classList.remove('hidden')
+    })
 
 
 });

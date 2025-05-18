@@ -9,7 +9,6 @@
     $user = Usuario::find(session()->get('user_id'));
     $notificacoes = $user->notificacoes()->where('estatus', '=', 'ON')->get();
 
-
 @endphp
 
 
@@ -29,7 +28,7 @@
     <script src="{{ asset('js/index.js') }}" defer></script>
     <script src="{{ asset('js/validate.js') }}" defer></script>
 
-    
+
     @livewireStyles()
 </head>
 <script src="//unpkg.com/alpinejs" defer></script>
@@ -41,9 +40,9 @@
         class="absolute top-0 flex items-center justify-center w-screen h-20 z-40 backdrop-blur shadow-lg bg-slate-800">
 
 
-        <div class='ml-10 text-blue-400'>
-            <button class='flex items-center justify-center size-8 p-2 rounded bg-white/10' onclick='asideHide()'><i
-                    class='bi bi-layout-sidebar'></i></button>
+        <div class='ml-10 text-slate-300'>
+            <button class='flex items-center justify-center size-8 p-2 rounded hover:bg-white/10'
+                onclick='asideHide()'><i class='bi bi-list'></i></button>
         </div>
         {{-- end --}}
         <x-logo-mark />
@@ -64,9 +63,9 @@
 
 
             <a href='/usuarios/'>
-                <div class="relative flex items-center justify-center p-2 rounded text-slate-500 bg-slate-500/10">
+                <div class="relative flex items-center justify-center p-2 rounded-3xl text-slate-500 bg-slate-500/10">
 
-                    <i class='bi bi-person-fill'></i>
+                    {{-- <i class='bi bi-person-fill'></i> --}}
                     <h1 class='overflow-hidden font-bold w-full text-center'>{{ $user->nome }}</h1>
                     <span class='absolute top-0 size-2 bg-red-500 right-0 rounded-full'><span>
                 </div>
@@ -74,8 +73,14 @@
 
 
         </div>
+
+        <div id='progress' class="absolute bottom-0 h-1 accent-black w-full bg-blue-500 animate-ping hidden "
+            max="100" value="50">
+
+
+        </div>
     </header>
-  
+
     <x-asidebar />
     {{-- end --}}
     <main class='relative flex items-center justify-center grow'>
