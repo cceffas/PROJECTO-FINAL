@@ -7,7 +7,8 @@
     @endphp
     <div class="mt-20 space-y-10">
 
-        <x-Title-App title="Instrutor > egistrar" icon="bi bi-person" type='secondary' action="/instrutores" text-action='voltar' />
+        <x-Title-App title="Instrutor > egistrar" icon="bi bi-person" type='secondary' action="/instrutores"
+            text-action='voltar' />
 
         @if (sizeof($cursos) > 0)
             <x-bladewind::card>
@@ -97,7 +98,8 @@
                     </div>
 
                     <!-- especialidade -->
-                    <x-bladewind::textarea name='especialidade' placeholder="especialidade"></x-bladewind::textarea>
+                    <textarea class="w-full border-2 border-slate-200" name='especialidade' placeholder="especialidade"
+                        required></textarea>
 
 
                     <!-- Foto -->
@@ -125,7 +127,8 @@
             <x-bladewind::card>
                 <div class="flex flex-col items-center gap-4">
 
-                    <x-bladewind::tag color='red' label='sem cursos disponiveis não é possivel registrar um Instrutor!' />
+                    <x-bladewind::tag color='red'
+                        label='sem cursos disponiveis não é possivel registrar um Instrutor!' />
 
 
 

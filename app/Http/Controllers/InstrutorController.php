@@ -8,6 +8,32 @@ use Illuminate\Http\Request;
 
 class InstrutorController extends Controller
 {
+
+
+    public function preencherDados(Instrutor $instrutor, Request $dados)
+    {
+        // Upload da imagem
+        $arquivo = $dados->file('foto');
+        $nomeImagem = time() . '.' . $arquivo->getClientOriginalExtension();
+        $arquivo->move(public_path('uploads'), $nomeImagem);
+
+        //upload de documentos
+        $arquivo = $dados->file('documentos');
+        $nomeDocumento = time() . '.' . $arquivo->getClientOriginalExtension();
+        $arquivo->move(public_path('uploads'), $nomeDocumento);
+
+        $instrutor->nome = $dados->nome;
+        $instrutor->email = $dados->email ?? "sem email";
+        $instrutor->bi = $dados->bi;
+        $instrutor->tel = $dados->tel;
+        $instrutor->sexo = $dados->sexo;
+        $instrutor->especialidade = $dados->especialidade;
+        $instrutor->foto = $nomeImagem;
+        $instrutor->documentos = $nomeDocumento;
+
+
+        return $instrutor;
+    }
     public function index()
     {
 
@@ -53,26 +79,10 @@ class InstrutorController extends Controller
 
             if ($curso == null) redirect()->back()->with('error', 'ocorreu um erro, verifique o curso');
 
-            // Upload da imagem
-            $arquivo = $dados->file('foto');
-            $nomeImagem = time() . '.' . $arquivo->getClientOriginalExtension();
-            $arquivo->move(public_path('uploads'), $nomeImagem);
-
-            //upload de documentos
-            $arquivo = $dados->file('documentos');
-            $nomeDocumento = time() . '.' . $arquivo->getClientOriginalExtension();
-            $arquivo->move(public_path('uploads'), $nomeDocumento);
 
 
-            $novo_instrutor = new Instrutor();
-            $novo_instrutor->nome = $dados->nome;
-            $novo_instrutor->email = $dados->email ?? "sem email";
-            $novo_instrutor->bi = $dados->bi;
-            $novo_instrutor->tel = $dados->tel;
-            $novo_instrutor->sexo = $dados->sexo;
-            $novo_instrutor->especialidade = $dados->especialidade;
-            $novo_instrutor->foto = $nomeImagem;
-            $novo_instrutor->documentos = $nomeDocumento;
+
+            $novo_instrutor = $this->preencherDados(new Instrutor(), $dados);
 
 
 
@@ -97,24 +107,7 @@ class InstrutorController extends Controller
 
         if ($instrutor == null) return redirect()->back()->with('error', 'ocorreu um erro!');
 
-        // Upload da imagem
-        $arquivo = $dados->file('foto');
-        $nomeImagem = time() . '.' . $arquivo->getClientOriginalExtension();
-        $arquivo->move(public_path('uploads'), $nomeImagem);
-
-        //upload de documentos
-        $arquivo = $dados->file('documentos');
-        $nomeDocumento = time() . '.' . $arquivo->getClientOriginalExtension();
-        $arquivo->move(public_path('uploads'), $nomeDocumento);
-        // Atualiza os dados
-        $instrutor->nome = $dados->nome;
-        $instrutor->email = $dados->email ?? "sem email";
-        $instrutor->bi = $dados->bi;
-        $instrutor->tel = $dados->tel;
-        $instrutor->sexo = $dados->sexo;
-        $instrutor->especialidade = $dados->especialidade;
-        $instrutor->foto = $nomeImagem;
-        $instrutor->documentos = $nomeDocumento;
+        $instrutor = $this->preencherDados($instrutor, $dados);
 
 
         if ($instrutor->update()) {

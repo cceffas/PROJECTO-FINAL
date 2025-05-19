@@ -50,10 +50,6 @@ function asideHide() {
 /*colorir os botoens do aside bar caso forem pressinados*/
 const aside_buttons = document.querySelectorAll('#asidebar a');
 const progressBar=document.querySelector('#progress')
-
-
-
-
 // Pega a primeira pasta da URL atual
 const currentPath = window.location.pathname.split('/')[1];
 
