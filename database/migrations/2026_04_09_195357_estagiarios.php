@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('tel')->nullable();
             $table->enum('sexo', ['M', 'F']);
             $table->text('foto');
-            $table->string('bi', 14);
+            $table->string('bi', 14)->unique();
             $table->date('dt_nascimento');
             $table->unsignedBigInteger('instituto_id')->nullable()->default(null);
             $table->foreign('instituto_id')->references('id')->on('institutos')->onDelete('cascade');

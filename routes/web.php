@@ -12,8 +12,6 @@ use App\Http\Controllers\TurmaController;
 use App\Http\Controllers\InstrutorController;
 use App\Http\Controllers\EstagiariosController;
 use App\Http\Controllers\InstitutoController;
-
-
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PlanoEstagioController;
 use App\Http\Controllers\desempenhoController;
@@ -23,13 +21,11 @@ use App\Http\Middleware\UsuarioLogado;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\Pedagogia;
 use App\Http\Middleware\Secretaria;
-use App\Http\Middleware\NoCacheHeaders;
-use App\Models\Notificacao;
+
 use App\Models\Aluno;
 
 
 
-Route::middleware(NoCacheHeaders::class)->group(function () {
 
     Route::get('/', [AuthController::class, 'index'])->middleware(UsuarioNaoLogado::class);
 
@@ -180,4 +176,3 @@ Route::middleware(NoCacheHeaders::class)->group(function () {
         Route::post('/criar', [InstitutoController::class, 'create']);
     });
     #-------------------------------------------------------------------------------------------
-});
