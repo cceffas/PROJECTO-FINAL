@@ -21,7 +21,7 @@
 
                 <!-- Nome -->
                 <div>
-                    <label for="nome" class="block text-sm font-medium text-slate-600 mb-1">Nome</label>
+                    <label for="nome" class="block text-sm font-medium text-slate-600 mb-1">Nome<x-obr /></label>
                     <div class="flex items-center border border-slate-300 rounded">
                         <i class="bi-person-fill text-slate-400 p-2"></i>
                         <input type="text" id="any-text" name="nome" maxlength="50" required
@@ -46,14 +46,15 @@
                         <label for="tel" class="block text-sm font-medium text-slate-600 mb-1">Telefone</label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-telephone-fill text-slate-400 p-2"></i>
-                            <input type="text" id="any-tel" name="tel" pattern="^9\d{8}$" maxlength="9" required
+                            <input type="text" id="any-tel" name="tel" pattern="^9\d{8}$" maxlength="9"
                                 class="{{ $class_input }}" value="{{ $aluno->tel }}"
                                 placeholder="9 dígitos começando por 9">
                         </div>
                     </div>
 
                     <div>
-                        <label for="bi" class="block text-sm font-medium text-slate-600 mb-1">Número de BI</label>
+                        <label for="bi" class="block text-sm font-medium text-slate-600 mb-1">Número de
+                            BI<x-obr /></label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-card-text text-slate-400 p-2"></i>
                             <input type="text" id="any-bi" name="bi" required pattern="^\d{9}[A-Z]{2}\d{3}$"
@@ -66,7 +67,7 @@
                 <!-- Data de Nascimento -->
                 <div>
                     <label for="dt_nascimento" class="block text-sm font-medium text-slate-600 mb-1">Data de
-                        Nascimento</label>
+                        Nascimento<x-obr /></label>
                     <div class="flex items-center border border-slate-300 rounded">
                         <i class="bi-calendar-fill text-slate-400 p-2"></i>
                         <input type="date" id="dt_nascimento" name="dt_nascimento" required class="{{ $class_input }}"
@@ -77,7 +78,7 @@
                 <!-- Curso -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="curso" class="block text-sm font-medium text-slate-600 mb-1">Curso</label>
+                        <label for="curso" class="block text-sm font-medium text-slate-600 mb-1">Curso<x-obr /></label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-book-fill text-slate-400 p-2"></i>
                             <select id="curso" name="curso" required class="{{ $class_input }}">
@@ -93,7 +94,7 @@
 
                     <!-- Gênero -->
                     <div>
-                        <label for="sexo" class="block text-sm font-medium text-slate-600 mb-1">Gênero</label>
+                        <label for="sexo" class="block text-sm font-medium text-slate-600 mb-1">Gênero<x-obr /></label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-gender-ambiguous text-slate-400 p-2"></i>
                             <select id="sexo" name="sexo" required class="{{ $class_input }}">
@@ -103,10 +104,10 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Foto -->
                 <div>
-                    <label for="foto" class="block text-sm font-medium text-slate-600 mb-1">Foto (Passe)</label>
+                    <label for="foto" class="block text-sm font-medium text-slate-600 mb-1">Foto (Passe)
+                        <x-obr /></label>
                     <x-bladewind::filepicker name="foto" accepted_file_types='image/*' max_file_size='10mb'
                         placeholder="Foto passe" selected_value="{{ asset('uploads/' . $aluno->foto) }}" required />
                 </div>
@@ -117,6 +118,7 @@
                     <x-bladewind::button can_submit='true'>confirmar</x-bladewind::button>
                 </div>
             </form>
+
         </x-bladewind::card>
     </div>
 @endsection

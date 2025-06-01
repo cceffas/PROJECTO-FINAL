@@ -6,12 +6,6 @@ use App\Models\Aluno;
 use App\Models\Curso;
 use App\Models\Nota;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
-
-use function PHPUnit\Framework\directoryExists;
-use function PHPUnit\Framework\isInt;
 
 class AlunoController extends Controller
 {
@@ -52,6 +46,8 @@ class AlunoController extends Controller
         $cursos = Curso::all();
         $_cursos = [];
 
+
+
         foreach ($cursos as $curso) {
 
             array_push($_cursos, ['label' => $curso->nome, 'value' => $curso->id]);
@@ -89,8 +85,9 @@ class AlunoController extends Controller
         $aluno = $this->preencherAluno(new Aluno(), $dados);
         $aluno->estatus = 'OFF';
 
-        if ($aluno->save()) {
 
+        try {
+            $aluno->save();
             for ($n = 0; $n < 3; $n++) {
 
                 $notas = new Nota();
@@ -102,10 +99,10 @@ class AlunoController extends Controller
             $curso = Curso::find($dados->curso);
             $aluno->cursos()->attach($curso);
 
+            return redirect()->back()->with('sucess', 'Aluno cadastrado com sucesso!');
+        } catch (\Exception $e) {
 
-            return redirect('/alunos/')->with('sucess', 'Aluno cadastrado com sucesso!');
-        } else {
-            return redirect('/alunos/cadastro')->with('error', 'A operação falhou!');
+            return redirect()->back()->with('error', 'A operação falhou! ja existe um usuario com o mesmo numero de bi');
         }
     }
     public function update(Request $dados)
@@ -122,12 +119,12 @@ class AlunoController extends Controller
             $aluno->cursos()->attach($curso);
         }
 
-        if ($aluno->update()) {
+        try {
+            $aluno->update();
+            return redirect()->back()->with('sucess', 'feito com sucesso!');
+        } catch (\Exception $e) {
 
-            return redirect("/alunos/$aluno->id")->with('sucess', 'feito com sucesso!');
-        } else {
-
-            return redirect("/alunos/$aluno->id")->with('error', 'a operação falhou!');
+            return redirect()->back()->with('error', 'a operação falhou!');
         }
     }
     public function delete($id)

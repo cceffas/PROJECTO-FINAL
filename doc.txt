@@ -13,3 +13,18 @@ inscricooes,avaliacoes,e emicao de certificados,relatorios de desempenho dos alu
 
 funcoes:
 gerenciar alunos,cursos,registro de presencas,
+
+-- ultimas stacks
+0- organizar todos os forms*
+
+
+1-estagiarios:
+    desempenho
+    relatorios
+2-planos de estagio com supervisor
+3-pagamentos->coderef unico
+4-fazer backup
+
+
+
+

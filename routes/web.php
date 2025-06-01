@@ -66,7 +66,7 @@ use App\Models\Aluno;
                     'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
                     'borderColor' => 'rgb(75, 192, 192)',
                 ]
-            
+
             ]
         ];
 
@@ -101,7 +101,7 @@ use App\Models\Aluno;
     Route::middleware([Secretaria::class])->prefix('/pagamentos')->group(function () {
 
         Route::get('/', [PagamentoController::class, 'index']);
-        Route::get('/form', [PagamentoController::class, 'form']);
+        Route::get('/form/{id?}', [PagamentoController::class, 'form']);
         Route::post('/criar', [PagamentoController::class, 'create']);
         Route::get('/{id}', [PagamentoController::class, 'show']);
     });

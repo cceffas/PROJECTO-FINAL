@@ -16,7 +16,7 @@
                     </tr>
                 </x-slot>
                 {{-- end --}}
-                @if($planos!=null)
+                @if ($planos != null)
                     @foreach ($planos as $plano)
                         <tr>
                             <td>{{ $plano->id }}</td>
@@ -27,14 +27,12 @@
 
                             <td>
                                 <div class="flex gap-2">
-                                    <x-bladewind::button color="red" onclick="showModal('{{ $plano->id }}')"><i
+                                    <x-bladewind::button color="slate" onclick="showModal('{{ $plano->id }}')"><i
                                             class="bi-trash"></i></x-bladewind::button>
                                     {{-- end --}}
-                                    <x-bladewind::button tag='a' href="/planos/{{$plano->id}}"><i
+                                    <x-bladewind::button tag='a' href="/planos/{{ $plano->id }}"><i
                                             class="bi-pencil"></i></x-bladewind::button>
-                                    <x-bladewind::button color="blue" tag='a'
-                                        href="/planos/alunos/{{ $plano->id }}"><i
-                                            class="bi-people"></i></x-bladewind::button>
+
                                     {{-- end --}}
                                 </div>
                             </td>
@@ -44,7 +42,7 @@
                             <div class="flex flex-col items-center justify-center">
                                 <form action="/planos/deletar/" method="post">
                                     @csrf
-                                    <input type="hidden" name="id" value="{{$plano->id}}">
+                                    <input type="hidden" name="id" value="{{ $plano->id }}">
                                     <i
                                         class="bi-trash text-4xl size-12 flex justify-center items-center bg-red-500/50 text-red-500 rounded-full mb-2"></i>
                                     <h1>quer eliminar o plano</h1>
@@ -74,7 +72,7 @@
                                             value="{{ $plano->nome }}" />
                                         {{-- end --}}
                                         <textarea label='Descrição' name='descricao'
-                                            class="resize-none min-h-32 border-slate-200 border-2 rounded-md text-slate-500 text-justify">{{ $plano->descricao }} 
+                                            class="resize-none min-h-32 border-slate-200 border-2 rounded-md text-slate-500 text-justify">{{ $plano->descricao }}
                             </textarea>
                                         {{-- end select radius --}}
                                         <div class="flex justify-end gap-4 mt-2">
@@ -90,7 +88,7 @@
                     @endforeach
                 @endif
                 {{-- end --}}
-               
+
             </x-bladewind::table>
         </x-bladewind::card>
     </div>

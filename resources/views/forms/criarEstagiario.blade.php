@@ -3,7 +3,7 @@
 @section('content')
     @php
         $class_input =
-            'apaerence-none bg-transparent w-full border-none outline outline-1 outline-slate-300 focus:outline-blue-500 text-slate-500 placeholder-slate-400/50';
+            'appearence-none bg-transparent w-full border-none outline outline-1 outline-slate-300 focus:outline-blue-500 text-slate-500 placeholder-slate-400/50';
     @endphp
     <div class="mt-20 space-y-10">
 
@@ -19,7 +19,7 @@
 
                     <!-- Nome -->
                     <div>
-                        <label for="nome" class="block text-sm font-medium text-slate-600 mb-1">Nome</label>
+                        <label for="nome" class="block text-sm font-medium text-slate-600 mb-1">Nome<x-obr/></label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-person-fill text-slate-400 p-2"></i>
                             <input type="text" id="any-text" name="nome" maxlength="50" required
@@ -45,13 +45,13 @@
                             <label for="tel" class="block text-sm font-medium text-slate-600 mb-1">Telefone</label>
                             <div class="flex items-center border border-slate-300 rounded">
                                 <i class="bi-telephone-fill text-slate-400 p-2"></i>
-                                <input type="text" id="any-tel" name="tel" maxlength="9" required
+                                <input type="text" id="any-tel" name="tel" maxlength="9"
                                     pattern="^9\d{8}$" class="{{ $class_input }}" placeholder="9 dígitos começando por 9">
                             </div>
                         </div>
 
                         <div>
-                            <label for="bi" class="block text-sm font-medium text-slate-600 mb-1">Número de BI</label>
+                            <label for="bi" class="block text-sm font-medium text-slate-600 mb-1">Número de BI<x-obr/></label>
                             <div class="flex items-center border border-slate-300 rounded">
                                 <i class="bi-card-text text-slate-400 p-2"></i>
                                 <input type="text" id="any-bi" name="bi" required maxlength="14"
@@ -64,7 +64,7 @@
                     <!-- Data de Nascimento -->
                     <div>
                         <label for="dt_nascimento" class="block text-sm font-medium text-slate-600 mb-1">Data de
-                            Nascimento</label>
+                            Nascimento<x-obr/> </label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-calendar-fill text-slate-400 p-2"></i>
                             <input type="date" id="dt_nascimento" name="dt_nascimento" required
@@ -75,7 +75,7 @@
                     <!-- plano -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="plano" class="block text-sm font-medium text-slate-600 mb-1">plano</label>
+                            <label for="plano" class="block text-sm font-medium text-slate-600 mb-1">plano<x-obr/> </label>
                             <div class="flex items-center border border-slate-300 rounded">
                                 <i class="bi-book-fill text-slate-400 p-2"></i>
                                 <select id="plano" name="plano" required class="{{ $class_input }}">
@@ -88,7 +88,7 @@
 
                         <!-- Gênero -->
                         <div>
-                            <label for="sexo" class="block text-sm font-medium text-slate-600 mb-1">Gênero</label>
+                            <label for="sexo" class="block text-sm font-medium text-slate-600 mb-1">Gênero<x-obr/> </label>
                             <div class="flex items-center border border-slate-300 rounded">
                                 <i class="bi-gender-ambiguous text-slate-400 p-2"></i>
                                 <select id="sexo" name="sexo" required class="{{ $class_input }}">
@@ -102,7 +102,7 @@
 
                     <div class="mb-2">
                         <label for="instituto" class="block text-sm font-medium text-slate-600 mb-1">instituto de
-                            origem(opcional)</label>
+                            origem(opcional)<x-obr/> </label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi bi-buildings-fill text-slate-400 p-2"></i>
                             <select id="instituto" name="instituto"  class="{{ $class_input }}">
@@ -115,16 +115,16 @@
                     </div>
                     <!-- Foto -->
                     <div>
-                        <label for="foto" class="block text-sm font-medium text-slate-600 mb-1">Foto (Passe)</label>
+                        <label for="foto" class="block text-sm font-medium text-slate-600 mb-1">Foto (Passe)<x-obr/> </label>
                         <x-bladewind::filepicker name="foto" accepted_file_types='image/*' max_file_size='10mb'
                             placeholder="Foto passe" required />
                     </div>
                     <!-- Documentos -->
                     <div>
-                        <label for="foto"
-                            class="block text-sm font-medium text-slate-600 mb-1">Documentos(pdf*doc*docx)</label>
-                        <x-bladewind::filepicker name="documentos" accepted_file_types="application/pdf, .doc, .docx"
-                            max_file_size='10mb' placeholder="Foto passe" required />
+                        <label for="documentos"
+                            class="block text-sm font-medium text-slate-600 mb-1">Outro documento(opcional)</label>
+                        <x-bladewind::filepicker name="documentos" accepted_file_types="application/pdf,image/*"
+                            max_file_size='10mb'   />
                     </div>
 
                     <!-- Ações -->

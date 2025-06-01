@@ -44,8 +44,7 @@
                                 <option value="secretaria">
                                     Secretaria
                                 </option>
-                                <option value="pedagogia">Pedagogia
-                                </option>
+
 
                             </select>
                         </div>

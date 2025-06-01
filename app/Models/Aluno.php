@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Aluno extends Model
 {
 
-    
+
 
     public function notas(){
 
-   
+
         return $this->hasMany(Nota::class);
     }
     public function pagamentos()

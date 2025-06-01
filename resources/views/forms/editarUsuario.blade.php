@@ -44,8 +44,7 @@
                                 <option value="secretaria" {{ $usuario->acesso == 'secretaria' ? 'selected' : '' }}>
                                     Secretaria
                                 </option>
-                                <option value="pedagogia" {{ $usuario->acesso == 'pedagogia' ? 'selected' : '' }}>Pedagogia
-                                </option>
+
 
                             </select>
                         </div>

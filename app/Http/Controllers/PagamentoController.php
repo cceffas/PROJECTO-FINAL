@@ -33,10 +33,13 @@ class PagamentoController extends Controller
         return view('main.pagamentos', ['cursos' => $cursos, 'alunos' => $alunos, 'pagamentos' => $pagamentos]);
     }
 
-    public function form()
+    public function form(Request $id)
     {
 
-        return view('forms.criarPagamento');
+
+        $aluno_id = $id->input('aluno_id') ?? null;
+        $aluno = Aluno::find($aluno_id);
+        return view('forms.criarPagamento', compact('aluno'));
     }
 
     public function show($id)
@@ -70,20 +73,26 @@ class PagamentoController extends Controller
                 $arquivo = $dados->file('comprovativo');
                 $nomeArquivo = time() . '_' . $arquivo->getClientOriginalName();
                 $arquivo->move(public_path('uploads'), $nomeArquivo);
-                
 
-                $novo_pagamento = new Pagamento();
-                $novo_pagamento->valor = $dados->valor;
-                $novo_pagamento->m_pagamento = $dados->m_pagamento;
-                $novo_pagamento->referencia = $dados->referencia;
-                $novo_pagamento->descricao = $dados->descricao;
-                $novo_pagamento->usuario()->associate($usuario);
-                $novo_pagamento->aluno()->associate($aluno);
-                $novo_pagamento->comprovativo = $nomeArquivo;
-                $aluno->estatus='ON';
-                $aluno->update();
-                $novo_pagamento->save();
-                return redirect()->back()->with('sucess', 'pagamento registrado com sucesso');
+                try {
+
+                    $novo_pagamento = new Pagamento();
+                    $novo_pagamento->valor = $dados->valor;
+                    $novo_pagamento->m_pagamento = $dados->m_pagamento;
+                    $novo_pagamento->referencia = $dados->referencia;
+                    $novo_pagamento->descricao = $dados->descricao;
+                    $novo_pagamento->usuario()->associate($usuario);
+                    $novo_pagamento->aluno()->associate($aluno);
+                    $novo_pagamento->comprovativo = $nomeArquivo;
+                    $aluno->estatus = 'ON';
+                    $aluno->update();
+                    $novo_pagamento->save();
+                    return redirect()->back()->with('sucess', 'pagamento registrado com sucesso');
+                } catch (\Exception $e) {
+
+
+                    return redirect()->back()->with('error', 'verifique se inseriu o codigo certo do aluno! obs: o numero de referencia de pagamento não pode ser duplicado');
+                }
             } else {
 
                 return redirect()->back()->with('error', 'verifique se inseriu o codigo certo do aluno!');
@@ -92,8 +101,5 @@ class PagamentoController extends Controller
 
             return redirect()->back();
         }
-
-
-
     }
 }
