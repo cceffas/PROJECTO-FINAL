@@ -33,12 +33,11 @@
                 <td>
                     <div class="flex gap-2">
 
-                        @if(session()->get('acesso')=='admin')
+
                         <x-bladewind::button color="red" onclick="showModal('{{ $turma->id }}')"><i class="bi-trash"></i></x-bladewind::button>
                         {{-- end --}}
                         <x-bladewind::button color='green' onclick="showModal('{{ $turma->id }}edit')"><i class="bi-pencil"></i></x-bladewind::button>
                         {{-- end --}}
-                        @endif
                         <x-bladewind::button color='blue' tag='a' href='/turmas/alunos/{{ $turma->id }}'><i class="bi-person-add"></i></x-bladewind::button>
                     </div>
                 </td>

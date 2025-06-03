@@ -1,4 +1,4 @@
-<div class="flex items-center text-xl font-bold text-white gap-1 ml-8 ">
-    <h1 class=" flex items-center justify-center text-2xl bg-gradient-to-t from-orange-500 to-orange-800 text-transparent rounded-full bg-clip-text">Gest+</h1>
-    <h2 class='capitalize'>center</h2>
+<div class="flex items-center text-white gap-1 ml-8 ">
+    <img src="{{asset('icon.svg')}}" alt="logomark" class="size-16">
+    <h1 class="text-sm italic">V1.0</h1>
 </div>

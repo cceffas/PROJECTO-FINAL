@@ -20,7 +20,7 @@
                     <input type="hidden" name='id' value="{{ $usuario->id }}">
                     <!-- Nome -->
                     <div>
-                        <label for="nome" class="block text-sm font-medium text-slate-600 mb-1">Nome</label>
+                        <label for="nome" class="block text-sm font-medium text-slate-600 mb-1">Nome<x-obr/></label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-person-fill text-slate-400 p-2"></i>
                             <input type="text" id="any-text" name="nome" maxlength="50" required
@@ -34,16 +34,19 @@
 
 
                     <div>
-                        <label for="acesso" class="block text-sm font-medium text-slate-600 mb-1">Nivel Acesso</label>
+                        <label for="acesso" class="block text-sm font-medium text-slate-600 mb-1">Nivel Acesso<x-obr/> </label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-eyeglasses text-slate-400 p-2"></i>
                             <select name="acesso" required class="{{ $class_input }}">
 
-                                <option value="admin" {{ $usuario->acesso == 'admin' ? 'selected' : '' }}>Administrador
-                                </option>
-                                <option value="secretaria" {{ $usuario->acesso == 'secretaria' ? 'selected' : '' }}>
-                                    Secretaria
-                                </option>
+                                @if ($usuario->acesso == 'admin')
+                                    <option value="admin">Administrador
+                                    </option>
+                                @else
+                                    <option value="secretaria">
+                                        Secretaria
+                                    </option>
+                                @endif
 
 
                             </select>
@@ -53,7 +56,7 @@
 
         <!--Nova senha-->
         <div>
-            <label for="senhaNova" class="block text-sm font-medium text-slate-600 mb-1">confitmar senha</label>
+            <label for="senhaNova" class="block text-sm font-medium text-slate-600 mb-1">Nova senha</label>
             <div class="flex items-center border border-slate-300 rounded">
                 <i class="bi-key-fill text-slate-400 p-2"></i>
                 <input type="text" name="senhaNova" maxlength="50" class="{{ $class_input }}" placeholder="******">
@@ -62,7 +65,7 @@
 
         <!--confirmar senha -->
         <div>
-            <label for="senha" class="block text-sm font-medium text-slate-600 mb-1">confitmar senha</label>
+            <label for="senha" class="block text-sm font-medium text-slate-600 mb-1">senha<x-obr/></label>
             <div class="flex items-center border border-slate-300 rounded">
                 <i class="bi-key-fill text-slate-400 p-2"></i>
                 <input type="text" name="senha" maxlength="50" required class="{{ $class_input }}"

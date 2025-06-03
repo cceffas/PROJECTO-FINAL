@@ -10,7 +10,7 @@ class UsuarioController extends Controller
 {
     public function index()
     {
-        $acessos = ['admin', 'secretaria', 'pedagogia'];
+        $acessos = ['secretaria'];
 
         $usuarios = Usuario::all();
         return view('main.usuarios', ['usuarios' => $usuarios, 'acessos' => $acessos]);
@@ -49,7 +49,7 @@ class UsuarioController extends Controller
             return redirect()->back()->with('error', 'o nome do usuario deve ser unico');
         }
 
-        return redirect('/usuarios/')->with('sucess', 'o novo usuario foi criado com sucesso! ');
+       return redirect('/usuarios/')->with('sucess', 'o novo usuario foi criado com sucesso! ');
     }
     // end
     public function update(Request $dados)

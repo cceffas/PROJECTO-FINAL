@@ -29,8 +29,12 @@
                             @endif
                             <td>
                                 <div class="flex gap-2">
-                                    <x-bladewind::button color="slate" onclick="showModal('{{ $usuario->id }}')"><i
-                                            class="bi-trash"></i></x-bladewind::button>
+                                    @if ($usuario->acesso != 'admin')
+                                        <x-bladewind::button color="slate" onclick="showModal('{{ $usuario->id }}')"><i
+                                                class="bi-trash"></i></x-bladewind::button>
+                                    @else
+                                    <x-bladewind::button color='slate' disabled><i class="bi-trash"></i></x-bladewind::button>
+                                    @endif
                                     {{-- end --}}
                                     <x-bladewind::button tag='a' color='blue'
                                         href="/usuarios/editar/{{ $usuario->id }}"><i

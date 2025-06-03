@@ -20,7 +20,7 @@
 
                     <!-- Nome -->
                     <div>
-                        <label for="nome" class="block text-sm font-medium text-slate-600 mb-1">Nome</label>
+                        <label for="nome" class="block text-sm font-medium text-slate-600 mb-1">Nome<x-obr/></label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-person-fill text-slate-400 p-2"></i>
                             <input type="text" id="any-text" name="nome" maxlength="50" required
@@ -34,13 +34,12 @@
 
 
                     <div>
-                        <label for="acesso" class="block text-sm font-medium text-slate-600 mb-1">Nivel Acesso</label>
+                        <label for="acesso" class="block text-sm font-medium text-slate-600 mb-1">Nivel Acesso<x-obr/></label>
                         <div class="flex items-center border border-slate-300 rounded">
                             <i class="bi-eyeglasses text-slate-400 p-2"></i>
                             <select name="acesso" required class="{{ $class_input }}">
 
-                                <option value="admin">Administrador
-                                </option>
+
                                 <option value="secretaria">
                                     Secretaria
                                 </option>
@@ -55,7 +54,7 @@
 
         <!--confirmar senha -->
         <div>
-            <label for="senha" class="block text-sm font-medium text-slate-600 mb-1">senha</label>
+            <label for="senha" class="block text-sm font-medium text-slate-600 mb-1">senha<x-obr/></label>
             <div class="flex items-center border border-slate-300 rounded">
                 <i class="bi-key-fill text-slate-400 p-2"></i>
                 <input type="text" name="senha" maxlength="50" required class="{{ $class_input }}"
