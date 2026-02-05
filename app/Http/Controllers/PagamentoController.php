@@ -59,6 +59,12 @@ class PagamentoController extends Controller
     public function create(Request $dados)
     {
 
+
+
+   
+
+
+
         if ($dados->all() != null) {
 
 
@@ -88,6 +94,7 @@ class PagamentoController extends Controller
                     $aluno->update();
                     $novo_pagamento->save();
                     return redirect()->back()->with('sucess', 'pagamento registrado com sucesso');
+
                 } catch (\Exception $e) {
 
 

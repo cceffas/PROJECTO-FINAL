@@ -6,11 +6,54 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
+
+
+
+enum AcessoUsuario: string
+{
+    case ADMIN = 'admin';
+    case SECRETARIA = 'secretaria';
+    case FORMADOR = 'formador';
+
+
+}
+enum UsuarioStatus
+{
+    case ON;
+    case OFF;
+}
+
 class UsuarioController extends Controller
 {
+
+
+    private function validarDados(Request $dados)
+    {
+
+        $validar = validator::make(
+            $dados->all(),
+            [
+                'nome' => 'required',
+                'senha' => 'required|min:6',
+                'senha_confirmation' => 'required|same:senha',
+                'acesso' => 'required'
+            ],
+            [
+                'nome.required' => 'o nome é obrigatorio',
+                'senha.required' => 'a senha é obrigatoria',
+                'senha.min' => 'a senha deve conter no minimo 6 caracteres',
+                'senha_confirmation.required' => 'confirme a senha',
+                'senha_confirmation.same' => 'as senhas não coincidem',
+                'acesso.required' => 'selecione um nivel de acesso'
+            ]
+        );
+
+        return $validar;
+    }
     public function index()
     {
-        $acessos = ['secretaria'];
+        $acessos = AcessoUsuario::cases();
 
         $usuarios = Usuario::all();
         return view('main.usuarios', ['usuarios' => $usuarios, 'acessos' => $acessos]);
@@ -18,7 +61,14 @@ class UsuarioController extends Controller
     public function form()
     {
 
-        return view('forms.criarUsuario');
+        $acessos =
+            [
+                // ["label" => "Admin", "value" => "admin"],
+                ["label" => "Secretaria", "value" => "secretaria"],
+                ["label" => "Formador", "value" => "formador"],
+            ];
+
+        return view('forms.criarUsuario', compact('acessos'));
     }
     public function edit($id)
     {
@@ -34,43 +84,44 @@ class UsuarioController extends Controller
     public function create(Request $dados)
     {
 
-        $validar = validator::make($dados->all(), ['nome' => 'required', 'senha' => 'required|min:6', 'acesso' => 'required']);
+
+        $validar = $this->validarDados($dados);
 
         if ($validar->fails()) {
 
-            return redirect()->back()->with('error', 'o nome deve conter no minimo 4 caracteres e senha 6, e um unico nivel de acesso!');
+            return redirect()->back()->with('error', $validar->errors()->first());
         }
-
 
         try {
-            $novo_usuario = Usuario::create(['nome' => "$dados->nome", 'senha' => bcrypt($dados->senha), 'acesso' => $dados->acesso]);
+
+            $novo_usuario = Usuario::create(
+                [
+                    'nome' => "$dados->nome",
+                    'senha' => bcrypt($dados->senha),
+                    'acesso' => $dados->acesso
+                ]
+            );
+
         } catch (\Exception $e) {
 
-            return redirect()->back()->with('error', 'o nome do usuario deve ser unico');
+            return redirect()->back()->with('error', 'ja existe um usuario com esse email!');
         }
 
-       return redirect('/usuarios/')->with('sucess', 'o novo usuario foi criado com sucesso! ');
+
+        return redirect('/usuarios/')->with('sucess', 'o novo usuario foi criado com sucesso!');
+
     }
     // end
     public function update(Request $dados)
     {
 
 
-
-        $validar = validator::make(
-            $dados->all(),
-            [
-                'id' => 'required',
-                'nome' => 'required',
-                'senha' => 'required',
-                'acesso' => 'required'
-            ]
-        );
-
+        $validar = $this->validarDados($dados);
 
 
         if ($validar->fails()) {
-            return redirect()->back()->with('error', 'preencha todos os campos obrigatorios!');
+
+            return redirect()->back()->with('error', $validar->errors()->first());
         }
 
         $usuario = Usuario::find($dados->id);
@@ -99,15 +150,14 @@ class UsuarioController extends Controller
 
         if ($usuario) {
 
+            $usuario->update(['estatus' => UsuarioStatus::OFF->name]);
 
-            if ($usuario->estatus == 'ON') {
-                return redirect('/usuarios/')->with('error', 'não pode deletar usuario que esta online!');
-            }
-
-            $usuario->delete();
             return redirect('/usuarios/')->with('sucess', 'o usuario foi deletado com sucesso!');
+
         } else {
+
             return redirect('/usuarios/')->with('error', 'não foi possivel deletar usuario!');
+
         }
     }
 }

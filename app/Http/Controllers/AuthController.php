@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notificacao;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 
+
+enum MessagesErrorAuth: string
+{
+    case CAMPOS_VAZIOS = 'preancha todos os campos!';
+    case CREDENCIAIS_INVALIDAS = 'Credencias Invalidos!';
+    case ACESSO_NEGADO = 'acesso negado!';
+
+    case USUARIO_INATIVO = 'usuario inativo, contate o administrador!';
+    case SENHA_FRACA = 'a senha deve ter no minimo 6 caracteres';
+}
 
 class AuthController extends Controller
 {
@@ -15,41 +23,56 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
+
     public function entrar(Request $dados)
     {
 
-        $validacao = Validator::make($dados->all(), ['nome' => 'required', 'senha' => 'required']);
+        $validacao = Validator::make(
+            $dados->all(),
+            [
+                'nome' => 'required',
+                'senha' => 'required|min:6',
+            ],
+            [
+                'nome.required' => MessagesErrorAuth::CAMPOS_VAZIOS->value,
+                'senha.required' => MessagesErrorAuth::CAMPOS_VAZIOS->value,
+                'senha.min' => MessagesErrorAuth::SENHA_FRACA->value,
+
+            ]
+        );
+
 
         if ($validacao->fails()) {
 
-            return redirect('/')->with('error', 'preancha todos os campos!');
+            return redirect('/')->with('error', $validacao->errors()->first());
         }
 
+
+
+
+
+
         $usuario = Usuario::where('nome', '=', $dados->nome)->first();
-
-
-        // return $usuario;
-        $message_erro = 'Credencias Invalidos!';
-
 
         if ($usuario) {
 
             if (password_verify($dados->senha, $usuario->senha)) {
 
+                // if ($usuario->estatus == 'ON') {
 
 
-                if ($usuario->estatus == 'ON') {
+                //     $notificacao = Notificacao::create([
 
-                    $notificacao = new Notificacao();
-                    $notificacao->tipo = 'alerta';
-                    $notificacao->descricao = 'alguém tentou logar com as suas credencias';
-                    $notificacao->usuario()->associate($usuario);
-                    $notificacao->save();
+                //         "tipo" => 'alerta',
+                //         "descricao" => 'alguém tentou logar com as suas credencias',
+                //     ]);
+
+                //     $notificacao->usuario()->associate($usuario);
+                //     $notificacao->save();
+
+                // }
 
 
-                    // return redirect('/')->with('error', 'acesso negado!');
-
-                }
                 session(['user_id' => $usuario->id]);
                 session(['acesso' => $usuario->acesso]);
                 Cookie('user', $usuario->id, 24 * 60 * 60);
@@ -58,15 +81,18 @@ class AuthController extends Controller
                 $usuario->update();
 
                 return redirect('/panel/');
+
             } else {
 
-                return redirect('/')->with('error', $message_erro);
+                return redirect('/')->with('error', MessagesErrorAuth::CREDENCIAIS_INVALIDAS->value);
             }
         } else {
 
-            return redirect('/')->with('error', $message_erro);
+            return redirect('/')->with('error', MessagesErrorAuth::CREDENCIAIS_INVALIDAS->value);
         }
     }
+
+
     public function sair()
     {
 

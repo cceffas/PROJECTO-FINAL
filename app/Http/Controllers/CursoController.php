@@ -14,7 +14,7 @@ class CursoController extends Controller
         $cursos = Curso::all();
         return view('main.cursos', ['cursos' => $cursos]);
     }
-    // --------------------------------------------------
+    // -----------------------------------------------
     public function create(Request $dados)
     {
 
@@ -38,7 +38,7 @@ class CursoController extends Controller
 
         return redirect()->back()->with('error', 'não foi possivel criar um novo curso,preencha de acordo aos criterios');
     }
-    // -------------------------------------------------------
+    // -----------------------------------------------
     public function show($id)
     {
         $cursos_alunos = Curso::find($id);
@@ -48,6 +48,7 @@ class CursoController extends Controller
 
         return view('main.cursos_alunos', ['alunos' => $alunos, 'curso' => $cursos_alunos]);
     }
+    // -----------------------------------------------
     public function delete($id)
     {
 
@@ -67,7 +68,7 @@ class CursoController extends Controller
 
         return redirect('/cursos/')->with('error', 'não foi possivel deletar o curso');
     }
-
+    // -----------------------------------------------
     public function update(Request $dados)
     {
 
@@ -87,4 +88,5 @@ class CursoController extends Controller
             }
         }
     }
+
 }
